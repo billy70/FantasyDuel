@@ -25,6 +25,7 @@ class Player {
     private var _attackPower: Int!
     private var _armorRating: Int!
     private var _hitPoints = 50
+    private var _potion: PotionType!
     
     
     // MARK: Properties - public
@@ -33,11 +34,17 @@ class Player {
         get {
             return _name
         }
+        set {
+            self._name = name
+        }
     }
     
     var creatureType: CreatureType {
         get {
             return _creatureType
+        }
+        set {
+            self._creatureType = creatureType
         }
     }
     
@@ -45,11 +52,25 @@ class Player {
         get {
             return _attackPower
         }
+        set(newAttackPower) {
+            // Attack power can only be mutated externally
+            // by using an attack power potion, never directly!
+            if let _ = _potion where _potion == PotionType.Attack {
+               _attackPower = newAttackPower
+            }
+        }
     }
     
     var armorRating: Int {
         get {
             return _armorRating
+        }
+        set (newArmorRating) {
+            // Armor rating can only be mutated externally
+            // by using an armor rating potion, never directly!
+            if let _ = _potion where _potion == PotionType.Armor {
+                _armorRating = newArmorRating
+            }
         }
     }
     
@@ -57,16 +78,30 @@ class Player {
         get {
             return _hitPoints
         }
+        set (newHitPoints) {
+            // Hit points can only be mutated externally
+            // by using a health potion, never directly!
+            if let _ = _potion where _potion == PotionType.Health {
+                _hitPoints = newHitPoints
+            }
+        }
+    }
+    
+    var potion: PotionType {
+        get {
+            return _potion
+        }
     }
     
     
     // MARK: - Init
     
-    init(name: String, creatureType: CreatureType) {
+    init(name: String, creatureType: CreatureType, potion: PotionType) {
         _name = name
         _creatureType = creatureType
         _attackPower = getRandomAttackPower()
         _armorRating = getRandomArmorRating()
+        _potion = potion
     }
     
     
@@ -147,6 +182,17 @@ class Player {
         }
         
         return false
+    }
+    
+    func usePotion() {
+        switch potion {
+        case .Health:
+            hitPoints += 2
+        case .Armor:
+            armorRating += 2
+        case .Attack:
+            attackPower += 2
+        }
     }
 }
 
