@@ -44,6 +44,7 @@ class ViewController: UIViewController {
     var playerOneDidEnterName = false
     var playerOneName = ""
     var playerOneDidSelectPotion = false
+    var playerOnePotionSelection: PotionType!
 
     var playerTwo: Player!
     var playerTwoDidSelectCharacter = false
@@ -51,6 +52,7 @@ class ViewController: UIViewController {
     var playerTwoDidEnterName = false
     var playerTwoName = ""
     var playerTwoDidSelectPotion = false
+    var playerTwoPotionSelection: PotionType!
     
     var gamePhase: GamePhase = .CharacterSelection
     var firstPersonIsChoosingOptions = true
@@ -104,12 +106,18 @@ class ViewController: UIViewController {
     }
     
     @IBAction func healthPotionTapped(sender: AnyObject) {
+        setPlayerPotionSelection(PotionType.Health)
+        proceedToCharacterSelectionPhase()
     }
     
     @IBAction func armorPotionTapped(sender: AnyObject) {
+        setPlayerPotionSelection(PotionType.Armor)
+        proceedToCharacterSelectionPhase()
     }
     
     @IBAction func attackPotionTapped(sender: AnyObject) {
+        setPlayerPotionSelection(PotionType.Attack)
+        proceedToCharacterSelectionPhase()
     }
     
     @IBAction func leftPlayerAttackButtonTapped(sender: AnyObject) {
@@ -122,7 +130,6 @@ class ViewController: UIViewController {
     // MARK: - Methods
     
     func setPlayerCreatureType(type: CreatureType) {
-        
         if firstPersonIsChoosingOptions {
             
             playerOneDidSelectCharacter = true
@@ -146,6 +153,27 @@ class ViewController: UIViewController {
             playerTwoDidEnterName = true
             playerTwoName = playerNameLabel.text ?? "Player 2"
         }
+    }
+    
+    func setPlayerPotionSelection(potion: PotionType) {
+        if firstPersonIsChoosingOptions {
+            
+            playerOneDidSelectPotion = true
+            playerOnePotionSelection = potion
+            
+        } else {
+            
+            playerTwoDidSelectPotion = true
+            playerTwoPotionSelection = potion
+        }
+    }
+    
+    func proceedToCharacterSelectionPhase() {
+        gamePhase = .CharacterSelection
+        statusText.text = "Select a creature type:"
+        potionStackView.hidden = true
+        leftPlayerButton.hidden = false
+        rightPlayerButton.hidden = false
     }
     
     func proceedToCharacterNamePhase() {
