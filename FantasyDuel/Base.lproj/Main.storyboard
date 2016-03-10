@@ -118,7 +118,7 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Health" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7ie-MP-SWQ">
-                                                <rect key="frame" x="31" y="120" width="59" height="24"/>
+                                                <rect key="frame" x="30.5" y="120" width="59" height="24"/>
                                                 <fontDescription key="fontDescription" name="AppleSDGothicNeo-Bold" family="Apple SD Gothic Neo" pointSize="20"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -148,7 +148,7 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Armor" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9a2-Hu-2HF">
-                                                <rect key="frame" x="32" y="120" width="57" height="24"/>
+                                                <rect key="frame" x="32" y="120" width="56.5" height="24"/>
                                                 <fontDescription key="fontDescription" name="AppleSDGothicNeo-Bold" family="Apple SD Gothic Neo" pointSize="20"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -178,7 +178,7 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Attack" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qzl-nJ-4zw">
-                                                <rect key="frame" x="31" y="120" width="59" height="24"/>
+                                                <rect key="frame" x="31" y="120" width="58.5" height="24"/>
                                                 <fontDescription key="fontDescription" name="AppleSDGothicNeo-Bold" family="Apple SD Gothic Neo" pointSize="20"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -191,6 +191,23 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ib1-GA-tKE">
+                                <rect key="frame" x="217.5" y="198" width="165" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="VVS-Dl-iw4"/>
+                                    <constraint firstAttribute="width" constant="165" id="nAq-ZF-mQI">
+                                        <variation key="heightClass=regular-widthClass=regular" constant="190"/>
+                                    </constraint>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="24"/>
+                                <inset key="contentEdgeInsets" minX="0.0" minY="5" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="Accept Name" backgroundImage="text-holder">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="28"/>
+                                </variation>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -201,6 +218,7 @@
                                 <variation key="heightClass=compact-widthClass=regular" constant="52"/>
                                 <variation key="heightClass=regular-widthClass=regular" constant="100"/>
                             </constraint>
+                            <constraint firstItem="ib1-GA-tKE" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="8CZ-zL-Wd4"/>
                             <constraint firstAttribute="trailing" secondItem="dcZ-k7-ilA" secondAttribute="trailing" id="Fml-ay-keY"/>
                             <constraint firstItem="zSm-7v-lZf" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="50" id="JOG-xG-KyX">
                                 <variation key="heightClass=compact-widthClass=compact" constant="110"/>
@@ -232,6 +250,7 @@
                             <constraint firstItem="tAx-Xl-E5k" firstAttribute="leading" secondItem="L8Q-gT-V7l" secondAttribute="leading" id="l5F-Ln-1sT"/>
                             <constraint firstItem="tAx-Xl-E5k" firstAttribute="centerX" secondItem="L8Q-gT-V7l" secondAttribute="centerX" id="oWx-XB-qvJ"/>
                             <constraint firstItem="Iuv-wd-Mrd" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="qAs-QL-gRK"/>
+                            <constraint firstItem="ib1-GA-tKE" firstAttribute="top" secondItem="PMk-1y-LHt" secondAttribute="bottom" constant="24" id="qjl-99-b5y"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="3yA-Bj-hff" secondAttribute="bottom" id="uNh-Ar-xDe"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="dcZ-k7-ilA" secondAttribute="bottom" id="vDH-S0-Aef"/>
                             <constraint firstItem="PMk-1y-LHt" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="xOQ-Gr-11f"/>
