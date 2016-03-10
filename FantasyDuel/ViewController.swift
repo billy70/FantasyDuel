@@ -32,18 +32,26 @@ class ViewController: UIViewController {
     @IBOutlet weak var playerOneButton: UIButton!
     @IBOutlet weak var playerTwoButton: UIButton!
     @IBOutlet weak var acceptNameButton: UIButton!
+    @IBOutlet weak var leftPlayerAttackButton: UIButton!
+    @IBOutlet weak var rightPlayerAttackButton: UIButton!
+    
     
     // MARK: - Properties
     
     var playerOne: Player!
     var playerOneDidSelectCharacter = false
+    var playerOneCreatureType: CreatureType!
+    var playerOneDidEnterName = false
     var playerOneDidSelectPotion = false
 
     var playerTwo: Player!
     var playerTwoDidSelectCharacter = false
+    var playerTwoCreatureType: CreatureType!
+    var playerTwoDidEnterName = false
     var playerTwoDidSelectPotion = false
     
     var gamePhase: GamePhase = .CharacterSelection
+    var firstPersonIsChoosingOptions = true
     
 
     // MARK: - Overrides
@@ -52,6 +60,8 @@ class ViewController: UIViewController {
         
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        statusText.text = "Player 1 - select a creature:"
     }
 
     override func didReceiveMemoryWarning() {
@@ -66,12 +76,9 @@ class ViewController: UIViewController {
         
         if gamePhase == .CharacterSelection {
             
-            playerOneDidSelectCharacter = true
-            
-            if playerTwoDidSelectCharacter {
-                proceedToCharacterNamePhase()
-            }
-            
+            setPlayerCreatureType(CreatureType.Goblin)
+            proceedToCharacterNamePhase()
+
         } else if gamePhase == .AttackRound {
             
             
@@ -82,12 +89,9 @@ class ViewController: UIViewController {
 
         if gamePhase == .CharacterSelection {
             
-            playerTwoDidSelectCharacter = true
-            
-            if playerOneDidSelectCharacter {
-                proceedToCharacterNamePhase()
-            }
-            
+            setPlayerCreatureType(CreatureType.Human)
+            proceedToCharacterNamePhase()
+
         } else if gamePhase == .AttackRound {
             
             
@@ -106,14 +110,35 @@ class ViewController: UIViewController {
     @IBAction func attackPotionTapped(sender: AnyObject) {
     }
     
+    @IBAction func leftPlayerAttackButtonTapped(sender: AnyObject) {
+    }
+    
+    @IBAction func rightPlayerAttackButtonTapped(sender: AnyObject) {
+    }
+    
     
     // MARK: - Methods
+    
+    func setPlayerCreatureType(type: CreatureType) {
+        
+        if firstPersonIsChoosingOptions {
+            
+            playerOneDidSelectCharacter = true
+            playerOneCreatureType = type
+            
+        } else {
+            
+            playerTwoDidSelectCharacter = true
+            playerTwoCreatureType = type
+        }
+    }
     
     func proceedToCharacterNamePhase() {
         gamePhase == .CharacterName
         playerOneButton.hidden = true
         playerTwoButton.hidden = true
         playerNameLabel.hidden = false
+        acceptNameButton.hidden = false
     }
 }
 
