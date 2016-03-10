@@ -42,12 +42,14 @@ class ViewController: UIViewController {
     var playerOneDidSelectCharacter = false
     var playerOneCreatureType: CreatureType!
     var playerOneDidEnterName = false
+    var playerOneName = ""
     var playerOneDidSelectPotion = false
 
     var playerTwo: Player!
     var playerTwoDidSelectCharacter = false
     var playerTwoCreatureType: CreatureType!
     var playerTwoDidEnterName = false
+    var playerTwoName = ""
     var playerTwoDidSelectPotion = false
     
     var gamePhase: GamePhase = .CharacterSelection
@@ -61,7 +63,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        statusText.text = "Player 1 - select a creature:"
+        statusText.text = "Select a creature type:"
     }
 
     override func didReceiveMemoryWarning() {
@@ -73,32 +75,32 @@ class ViewController: UIViewController {
     // MARK: - Action methods
     
     @IBAction func leftPlayerButtonTapped(sender: AnyObject) {
-        
+    
+        // The buttons representing the creatures is only
+        // used for the player to make their creature selection.
         if gamePhase == .CharacterSelection {
             
             setPlayerCreatureType(CreatureType.Goblin)
             proceedToCharacterNamePhase()
-
-        } else if gamePhase == .AttackRound {
-            
-            
         }
     }
 
     @IBAction func rightPlayerButtonTapped(sender: AnyObject) {
 
+        // The buttons representing the creatures is only
+        // used for the player to make their creature selection.
         if gamePhase == .CharacterSelection {
             
             setPlayerCreatureType(CreatureType.Human)
             proceedToCharacterNamePhase()
-
-        } else if gamePhase == .AttackRound {
-            
-            
         }
     }
 
     @IBAction func acceptNameButtonTapped(sender: AnyObject) {
+        if playerNameLabel.text != nil {
+            setPlayerName()
+            proceedToPotionSelectionPhase()
+        }
     }
     
     @IBAction func healthPotionTapped(sender: AnyObject) {
@@ -133,12 +135,34 @@ class ViewController: UIViewController {
         }
     }
     
+    func setPlayerName() {
+        if firstPersonIsChoosingOptions {
+            
+            playerOneDidEnterName = true
+            playerOneName = playerNameLabel.text ?? "Player 1"
+
+        } else {
+            
+            playerTwoDidEnterName = true
+            playerTwoName = playerNameLabel.text ?? "Player 2"
+        }
+    }
+    
     func proceedToCharacterNamePhase() {
         gamePhase == .CharacterName
+        statusText.text = "Enter your name:"
         leftPlayerButton.hidden = true
         rightPlayerButton.hidden = true
         playerNameLabel.hidden = false
         acceptNameButton.hidden = false
+    }
+    
+    func proceedToPotionSelectionPhase() {
+        gamePhase == .PotionSelection
+        statusText.text = "Select a potion:"
+        playerNameLabel.hidden = true
+        acceptNameButton.hidden = true
+        potionStackView.hidden = false
     }
 }
 
