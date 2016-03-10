@@ -31,7 +31,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var potionStackView: UIStackView!
     @IBOutlet weak var playerOneButton: UIButton!
     @IBOutlet weak var playerTwoButton: UIButton!
-    
+    @IBOutlet weak var acceptNameButton: UIButton!
     
     // MARK: - Properties
     
@@ -94,6 +94,9 @@ class ViewController: UIViewController {
         }
     }
 
+    @IBAction func acceptNameButtonTapped(sender: AnyObject) {
+    }
+    
     @IBAction func healthPotionTapped(sender: AnyObject) {
     }
     

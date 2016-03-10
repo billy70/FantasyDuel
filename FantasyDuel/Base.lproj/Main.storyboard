@@ -207,6 +207,9 @@
                                 <variation key="heightClass=regular-widthClass=regular">
                                     <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="28"/>
                                 </variation>
+                                <connections>
+                                    <action selector="acceptNameButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="DdG-MT-CzJ"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -263,6 +266,7 @@
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="acceptNameButton" destination="ib1-GA-tKE" id="SZf-5b-QOC"/>
                         <outlet property="playerNameLabel" destination="PMk-1y-LHt" id="zzC-z5-pBa"/>
                         <outlet property="playerOneButton" destination="zSm-7v-lZf" id="H4R-Wp-aez"/>
                         <outlet property="playerTwoButton" destination="JDz-lW-jaP" id="e4P-Jj-KXy"/>
