@@ -60,6 +60,9 @@
                                     </constraint>
                                 </constraints>
                                 <state key="normal" image="enemy"/>
+                                <connections>
+                                    <action selector="playerOneButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JTl-6s-Big"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JDz-lW-jaP">
                                 <rect key="frame" x="406" y="372" width="147" height="176"/>
@@ -72,8 +75,11 @@
                                     </constraint>
                                 </constraints>
                                 <state key="normal" image="player"/>
+                                <connections>
+                                    <action selector="playerTwoButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="R6D-6D-TU0"/>
+                                </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Player name" textAlignment="center" minimumFontSize="17" background="text-holder" translatesAutoresizingMaskIntoConstraints="NO" id="PMk-1y-LHt">
+                            <textField hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Player name" textAlignment="center" minimumFontSize="17" background="text-holder" translatesAutoresizingMaskIntoConstraints="NO" id="PMk-1y-LHt">
                                 <rect key="frame" x="213" y="129" width="175" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="175" id="7oI-in-9SF">
@@ -90,7 +96,7 @@
                                     <fontDescription key="fontDescription" name="AppleSDGothicNeo-Medium" family="Apple SD Gothic Neo" pointSize="28"/>
                                 </variation>
                             </textField>
-                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iuv-wd-Mrd">
+                            <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iuv-wd-Mrd">
                                 <rect key="frame" x="120" y="228" width="360" height="144"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Jzd-9o-uVT">
@@ -107,6 +113,9 @@
                                                     </constraint>
                                                 </constraints>
                                                 <state key="normal" image="potion_health"/>
+                                                <connections>
+                                                    <action selector="healthPotionTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xNa-si-68s"/>
+                                                </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Health" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7ie-MP-SWQ">
                                                 <rect key="frame" x="31" y="120" width="59" height="24"/>
@@ -134,6 +143,9 @@
                                                     </constraint>
                                                 </constraints>
                                                 <state key="normal" image="potion_attack"/>
+                                                <connections>
+                                                    <action selector="armorPotionTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xCE-jj-ZfW"/>
+                                                </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Armor" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9a2-Hu-2HF">
                                                 <rect key="frame" x="32" y="120" width="57" height="24"/>
@@ -161,6 +173,9 @@
                                                     </constraint>
                                                 </constraints>
                                                 <state key="normal" image="potion-armor"/>
+                                                <connections>
+                                                    <action selector="attackPotionTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="L9f-al-tEZ"/>
+                                                </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Attack" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qzl-nJ-4zw">
                                                 <rect key="frame" x="31" y="120" width="59" height="24"/>
@@ -228,6 +243,13 @@
                             </mask>
                         </variation>
                     </view>
+                    <connections>
+                        <outlet property="playerNameLabel" destination="PMk-1y-LHt" id="zzC-z5-pBa"/>
+                        <outlet property="playerOneButton" destination="zSm-7v-lZf" id="H4R-Wp-aez"/>
+                        <outlet property="playerTwoButton" destination="JDz-lW-jaP" id="e4P-Jj-KXy"/>
+                        <outlet property="potionStackView" destination="Iuv-wd-Mrd" id="9ee-fW-9ig"/>
+                        <outlet property="statusText" destination="tAx-Xl-E5k" id="V2p-S7-uwP"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
