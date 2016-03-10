@@ -39,23 +39,19 @@ class ViewController: UIViewController {
     // MARK: - Properties
     
     var playerOne: Player!
-    var playerOneDidSelectCharacter = false
     var playerOneCreatureType: CreatureType!
-    var playerOneDidEnterName = false
     var playerOneName = ""
-    var playerOneDidSelectPotion = false
     var playerOnePotionSelection: PotionType!
 
     var playerTwo: Player!
-    var playerTwoDidSelectCharacter = false
     var playerTwoCreatureType: CreatureType!
-    var playerTwoDidEnterName = false
     var playerTwoName = ""
-    var playerTwoDidSelectPotion = false
     var playerTwoPotionSelection: PotionType!
     
     var gamePhase: GamePhase = .CharacterSelection
     var firstPersonIsChoosingOptions = true
+    var playerSetupComplete = false
+    var whichPlayerIsFirst = 1
     
 
     // MARK: - Overrides
@@ -65,7 +61,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        statusText.text = "Select a creature type:"
+        initializeGame()
     }
 
     override func didReceiveMemoryWarning() {
@@ -121,23 +117,79 @@ class ViewController: UIViewController {
     }
     
     @IBAction func leftPlayerAttackButtonTapped(sender: AnyObject) {
+        leftPlayerAttackButton.enabled = false
+        NSTimer.scheduledTimerWithTimeInterval(1.5, target: self, selector: "enableRightPlayerAttack", userInfo: nil, repeats: false)
+        
+        if playerOne.isAttackSuccessfulAgainst(playerTwo) {
+            statusText.text = "\(playerOne.name) hit \(playerTwo.name)!"
+        } else {
+            statusText.text = "\(playerOne.name) missed!"
+        }
+
+        if playerTwo.isPlayerDefeated() {
+            playerVictory()
+        }
     }
     
     @IBAction func rightPlayerAttackButtonTapped(sender: AnyObject) {
+        rightPlayerAttackButton.enabled = false
+        NSTimer.scheduledTimerWithTimeInterval(1.5, target: self, selector: "enableLeftPlayerAttack", userInfo: nil, repeats: false)
+
+        if playerTwo.isAttackSuccessfulAgainst(playerOne) {
+            statusText.text = "\(playerTwo.name) hit \(playerOne.name)!"
+        } else {
+            statusText.text = "\(playerTwo.name) missed!"
+        }
+        
+        if playerOne.isPlayerDefeated() {
+            playerVictory()
+        }
     }
     
     
     // MARK: - Methods
     
+    func initializeGame() {
+        statusText.text = "Select a creature type:"
+        playerNameLabel.text = ""
+        playerNameLabel.hidden = true
+        potionStackView.hidden = true
+        leftPlayerButton.hidden = false
+        rightPlayerButton.hidden = false
+        acceptNameButton.hidden = true
+        leftPlayerAttackButton.hidden = true
+        rightPlayerAttackButton.hidden = true
+        playerSetupComplete = false
+        firstPersonIsChoosingOptions = true
+        
+        whichPlayerIsFirst = Int(arc4random_uniform(2)) + 1
+        
+        if whichPlayerIsFirst == 1 {
+            leftPlayerAttackButton.enabled = false
+        } else {
+            rightPlayerAttackButton.enabled = false
+        }
+    }
+    
+    func initializePlayers() {
+        playerOne = Player(name: playerOneName, creatureType: playerOneCreatureType, potion: playerOnePotionSelection)
+        playerTwo = Player(name: playerTwoName, creatureType: playerTwoCreatureType, potion: playerTwoPotionSelection)
+    }
+    
+    func initializeAttackRound() {
+        leftPlayerAttackButton.hidden = false
+        leftPlayerButton.hidden = false
+        rightPlayerAttackButton.hidden = false
+        rightPlayerButton.hidden = false
+    }
+    
     func setPlayerCreatureType(type: CreatureType) {
         if firstPersonIsChoosingOptions {
             
-            playerOneDidSelectCharacter = true
             playerOneCreatureType = type
             
         } else {
             
-            playerTwoDidSelectCharacter = true
             playerTwoCreatureType = type
         }
     }
@@ -145,39 +197,48 @@ class ViewController: UIViewController {
     func setPlayerName() {
         if firstPersonIsChoosingOptions {
             
-            playerOneDidEnterName = true
             playerOneName = playerNameLabel.text ?? "Player 1"
 
         } else {
             
-            playerTwoDidEnterName = true
             playerTwoName = playerNameLabel.text ?? "Player 2"
         }
+        
+        playerNameLabel.text = ""
     }
     
     func setPlayerPotionSelection(potion: PotionType) {
         if firstPersonIsChoosingOptions {
             
-            playerOneDidSelectPotion = true
             playerOnePotionSelection = potion
+            firstPersonIsChoosingOptions = false
             
         } else {
             
-            playerTwoDidSelectPotion = true
             playerTwoPotionSelection = potion
+            playerSetupComplete = true
         }
     }
     
     func proceedToCharacterSelectionPhase() {
-        gamePhase = .CharacterSelection
-        statusText.text = "Select a creature type:"
-        potionStackView.hidden = true
-        leftPlayerButton.hidden = false
-        rightPlayerButton.hidden = false
+        
+        if !playerSetupComplete {
+            
+            gamePhase = .CharacterSelection
+            statusText.text = "Select a creature type:"
+            potionStackView.hidden = true
+            leftPlayerButton.hidden = false
+            rightPlayerButton.hidden = false
+            
+        } else {
+            
+            proceedToAttackPhase()
+
+        }
     }
     
     func proceedToCharacterNamePhase() {
-        gamePhase == .CharacterName
+        gamePhase = .CharacterName
         statusText.text = "Enter your name:"
         leftPlayerButton.hidden = true
         rightPlayerButton.hidden = true
@@ -186,11 +247,42 @@ class ViewController: UIViewController {
     }
     
     func proceedToPotionSelectionPhase() {
-        gamePhase == .PotionSelection
+        gamePhase = .PotionSelection
         statusText.text = "Select a potion:"
         playerNameLabel.hidden = true
         acceptNameButton.hidden = true
         potionStackView.hidden = false
+    }
+    
+    func proceedToAttackPhase() {
+        
+        gamePhase = .AttackRound
+        statusText.text = "Attack!"
+        potionStackView.hidden = true
+        initializePlayers()
+        initializeAttackRound()
+    }
+    
+    func enableLeftPlayerAttack() {
+        leftPlayerAttackButton.enabled = true
+    }
+    
+    func enableRightPlayerAttack() {
+        rightPlayerAttackButton.enabled = true
+    }
+    
+    func playerVictory() {
+        NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "setupVictory", userInfo: nil, repeats: false)
+    }
+    
+    func setupVictory() {
+        if playerOne.isPlayerDefeated() {
+            statusText.text = "\(playerTwo.name) is Victorious!"
+        } else {
+            statusText.text = "\(playerOne.name) is Victorious!"
+        }
+
+        NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: "initializeGame", userInfo: nil, repeats: false)
     }
 }
 
