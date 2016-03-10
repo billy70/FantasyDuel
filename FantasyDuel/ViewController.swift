@@ -8,6 +8,19 @@
 
 import UIKit
 
+// MARK: - Game phases enumeration
+
+enum GamePhase {
+    case CharacterSelection
+    case CharacterName
+    case PotionSelection
+    case AttackRound
+    case Victory
+}
+
+
+// MARK: - ViewController class
+
 class ViewController: UIViewController {
 
     
@@ -18,6 +31,19 @@ class ViewController: UIViewController {
     @IBOutlet weak var potionStackView: UIStackView!
     @IBOutlet weak var playerOneButton: UIButton!
     @IBOutlet weak var playerTwoButton: UIButton!
+    
+    
+    // MARK: - Properties
+    
+    var playerOne: Player!
+    var playerOneDidSelectCharacter = false
+    var playerOneDidSelectPotion = false
+
+    var playerTwo: Player!
+    var playerTwoDidSelectCharacter = false
+    var playerTwoDidSelectPotion = false
+    
+    var gamePhase: GamePhase = .CharacterSelection
     
 
     // MARK: - Overrides
@@ -37,9 +63,35 @@ class ViewController: UIViewController {
     // MARK: - Action methods
     
     @IBAction func playerOneButtonTapped(sender: AnyObject) {
+        
+        if gamePhase == .CharacterSelection {
+            
+            playerOneDidSelectCharacter = true
+            
+            if playerTwoDidSelectCharacter {
+                proceedToCharacterNamePhase()
+            }
+            
+        } else if gamePhase == .AttackRound {
+            
+            
+        }
     }
 
     @IBAction func playerTwoButtonTapped(sender: AnyObject) {
+
+        if gamePhase == .CharacterSelection {
+            
+            playerTwoDidSelectCharacter = true
+            
+            if playerOneDidSelectCharacter {
+                proceedToCharacterNamePhase()
+            }
+            
+        } else if gamePhase == .AttackRound {
+            
+            
+        }
     }
 
     @IBAction func healthPotionTapped(sender: AnyObject) {
@@ -49,6 +101,16 @@ class ViewController: UIViewController {
     }
     
     @IBAction func attackPotionTapped(sender: AnyObject) {
+    }
+    
+    
+    // MARK: - Methods
+    
+    func proceedToCharacterNamePhase() {
+        gamePhase == .CharacterName
+        playerOneButton.hidden = true
+        playerTwoButton.hidden = true
+        playerNameLabel.hidden = false
     }
 }
 
