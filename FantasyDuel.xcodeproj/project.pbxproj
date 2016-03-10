@@ -14,6 +14,7 @@
 		D315C1EF1C90C8C200303C95 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D315C1ED1C90C8C200303C95 /* LaunchScreen.storyboard */; };
 		D315C1F71C90D36500303C95 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = D315C1F61C90D36500303C95 /* Player.swift */; };
 		D315C1F91C912A2D00303C95 /* CreatureType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D315C1F81C912A2D00303C95 /* CreatureType.swift */; };
+		D3D67B231C91FF3D001569D9 /* Potion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D67B221C91FF3D001569D9 /* Potion.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		D315C1F01C90C8C200303C95 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D315C1F61C90D36500303C95 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		D315C1F81C912A2D00303C95 /* CreatureType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatureType.swift; sourceTree = "<group>"; };
+		D3D67B221C91FF3D001569D9 /* Potion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Potion.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				D315C1F61C90D36500303C95 /* Player.swift */,
 				D315C1F81C912A2D00303C95 /* CreatureType.swift */,
 				D315C1E81C90C8C200303C95 /* Main.storyboard */,
+				D3D67B221C91FF3D001569D9 /* Potion.swift */,
 				D315C1EB1C90C8C200303C95 /* Assets.xcassets */,
 				D315C1ED1C90C8C200303C95 /* LaunchScreen.storyboard */,
 				D315C1F01C90C8C200303C95 /* Info.plist */,
@@ -146,6 +149,7 @@
 				D315C1F71C90D36500303C95 /* Player.swift in Sources */,
 				D315C1F91C912A2D00303C95 /* CreatureType.swift in Sources */,
 				D315C1E51C90C8C200303C95 /* AppDelegate.swift in Sources */,
+				D3D67B231C91FF3D001569D9 /* Potion.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,6 +299,7 @@
 				D315C1F51C90C8C200303C95 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
