@@ -29,8 +29,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var statusText: UILabel!
     @IBOutlet weak var playerNameLabel: UITextField!
     @IBOutlet weak var potionStackView: UIStackView!
-    @IBOutlet weak var playerOneButton: UIButton!
-    @IBOutlet weak var playerTwoButton: UIButton!
+    @IBOutlet weak var leftPlayerButton: UIButton!
+    @IBOutlet weak var rightPlayerButton: UIButton!
     @IBOutlet weak var acceptNameButton: UIButton!
     @IBOutlet weak var leftPlayerAttackButton: UIButton!
     @IBOutlet weak var rightPlayerAttackButton: UIButton!
@@ -72,7 +72,7 @@ class ViewController: UIViewController {
     
     // MARK: - Action methods
     
-    @IBAction func playerOneButtonTapped(sender: AnyObject) {
+    @IBAction func leftPlayerButtonTapped(sender: AnyObject) {
         
         if gamePhase == .CharacterSelection {
             
@@ -85,7 +85,7 @@ class ViewController: UIViewController {
         }
     }
 
-    @IBAction func playerTwoButtonTapped(sender: AnyObject) {
+    @IBAction func rightPlayerButtonTapped(sender: AnyObject) {
 
         if gamePhase == .CharacterSelection {
             
@@ -135,8 +135,8 @@ class ViewController: UIViewController {
     
     func proceedToCharacterNamePhase() {
         gamePhase == .CharacterName
-        playerOneButton.hidden = true
-        playerTwoButton.hidden = true
+        leftPlayerButton.hidden = true
+        rightPlayerButton.hidden = true
         playerNameLabel.hidden = false
         acceptNameButton.hidden = false
     }

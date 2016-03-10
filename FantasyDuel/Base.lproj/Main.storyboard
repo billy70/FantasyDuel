@@ -61,7 +61,7 @@
                                 </constraints>
                                 <state key="normal" image="enemy"/>
                                 <connections>
-                                    <action selector="playerOneButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JTl-6s-Big"/>
+                                    <action selector="leftPlayerButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4wO-PE-33B"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JDz-lW-jaP">
@@ -76,7 +76,7 @@
                                 </constraints>
                                 <state key="normal" image="player"/>
                                 <connections>
-                                    <action selector="playerTwoButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="R6D-6D-TU0"/>
+                                    <action selector="rightPlayerButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8nQ-7K-iXw"/>
                                 </connections>
                             </button>
                             <textField hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Player name" textAlignment="center" minimumFontSize="17" background="text-holder" translatesAutoresizingMaskIntoConstraints="NO" id="PMk-1y-LHt">
@@ -334,11 +334,11 @@
                     <connections>
                         <outlet property="acceptNameButton" destination="ib1-GA-tKE" id="SZf-5b-QOC"/>
                         <outlet property="leftPlayerAttackButton" destination="bGK-0a-wAg" id="pQI-vL-Lz8"/>
+                        <outlet property="leftPlayerButton" destination="zSm-7v-lZf" id="2cs-N7-SYa"/>
                         <outlet property="playerNameLabel" destination="PMk-1y-LHt" id="zzC-z5-pBa"/>
-                        <outlet property="playerOneButton" destination="zSm-7v-lZf" id="H4R-Wp-aez"/>
-                        <outlet property="playerTwoButton" destination="JDz-lW-jaP" id="e4P-Jj-KXy"/>
                         <outlet property="potionStackView" destination="Iuv-wd-Mrd" id="9ee-fW-9ig"/>
                         <outlet property="rightPlayerAttackButton" destination="ld8-DA-5sm" id="Pm1-ag-B1w"/>
+                        <outlet property="rightPlayerButton" destination="JDz-lW-jaP" id="XRY-R4-AzI"/>
                         <outlet property="statusText" destination="tAx-Xl-E5k" id="V2p-S7-uwP"/>
                     </connections>
                 </viewController>
