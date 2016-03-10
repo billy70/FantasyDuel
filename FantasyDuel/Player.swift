@@ -21,6 +21,7 @@ class Player {
     // MARK: - Properties - private
     
     private var _name: String!
+    private var _creatureType: CreatureType!
     private var _attackPower: Int!
     private var _armorRating: Int!
     private var _hitPoints = 50
@@ -31,6 +32,12 @@ class Player {
     var name: String {
         get {
             return _name
+        }
+    }
+    
+    var creatureType: CreatureType {
+        get {
+            return _creatureType
         }
     }
     
@@ -55,8 +62,9 @@ class Player {
     
     // MARK: - Init
     
-    init(name: String) {
+    init(name: String, creatureType: CreatureType) {
         _name = name
+        _creatureType = creatureType
         _attackPower = getRandomAttackPower()
         _armorRating = getRandomArmorRating()
     }
@@ -65,22 +73,34 @@ class Player {
     // MARK: - Methods - private
     
     private func getRandomAttackPower() -> Int {
-        // Generate a random number from 6 - 10 for the attack power once per game.
+        // Generate a random number from 6 - 10 for the base attack power once per game.
         var attackPower = 0
         
         while attackPower < 6 {
             attackPower = Int(arc4random_uniform(10) + 1)
         }
         
-        return attackPower
+        var attackBonus = 0
+        
+        if self._creatureType == CreatureType.Goblin {
+            attackBonus = 2
+        }
+
+        return attackPower + attackBonus
     }
     
     private func getRandomArmorRating() -> Int {
-        // Generate a random number from 1 - 5 for the armor rating once per game.
+        // Generate a random number from 1 - 5 for the base armor rating once per game.
         // The armor rating is used to absorb damage; for example,
         // if the player is hit with 7 attack power, and their armor
         // rating is 3, then the player will only be damaged for 4 hit points.
-        return Int(arc4random_uniform(5) + 1)
+        var armorBonus = 0
+        
+        if self._creatureType == CreatureType.Human {
+            armorBonus = 3
+        }
+        
+        return Int(arc4random_uniform(5) + 1) + armorBonus
     }
     
     private func takeDamage(attackPower: Int) {
