@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 // MARK: - Game phases enumeration
 
@@ -53,6 +54,29 @@ class ViewController: UIViewController {
     var playerSetupComplete = false
     var whichPlayerIsFirst = 1
     
+    var audioBattleMusic: AVAudioPlayer!
+    var audioFanfare: AVAudioPlayer!
+    var audioFight: AVAudioPlayer!
+    var audioGoblinDeath: AVAudioPlayer!
+    var audioHumanDeath: AVAudioPlayer!
+    var audioPlayerSetupMusic: AVAudioPlayer!
+    var audioPotionEffect: AVAudioPlayer!
+    var audioSwordAttack: AVAudioPlayer!
+    var audioAttackMissed: AVAudioPlayer!
+    var audioVictoryCry: AVAudioPlayer!
+    
+    var audioDictionary: [String: String] = [
+        "audioBattleMusic": "snd_duels_music",
+        "audioFanfare": "snd_fanfare",
+        "audioFight": "snd_fight",
+        "audioGoblinDeath": "snd_goblin_death",
+        "audioHumanDeath": "snd_human_death",
+        "audioPlayerSetupMusic": "snd_player_setup",
+        "audioPotionEffect": "snd_potion-effect",
+        "audioSwordAttack": "snd_sword_attack",
+        "audioAttackMissed": "snd_missed",
+        "audioVictoryCry": "snd_victory_cry"
+    ]
 
     // MARK: - Overrides
     
@@ -117,32 +141,46 @@ class ViewController: UIViewController {
     }
     
     @IBAction func leftPlayerAttackButtonTapped(sender: AnyObject) {
-        leftPlayerAttackButton.enabled = false
-        NSTimer.scheduledTimerWithTimeInterval(1.5, target: self, selector: "enableRightPlayerAttack", userInfo: nil, repeats: false)
+        leftPlayerAttackButton.hidden = true
+        print("left attack")
         
         if playerOne.isAttackSuccessfulAgainst(playerTwo) {
             statusText.text = "\(playerOne.name) hit \(playerTwo.name)!"
+            
+            playHitOrMissSound("hit")
+
         } else {
             statusText.text = "\(playerOne.name) missed!"
+
+            playHitOrMissSound("miss")
         }
 
         if playerTwo.isPlayerDefeated() {
             playerVictory()
+        } else {
+            NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "enableRightPlayerAttack", userInfo: nil, repeats: false)
         }
     }
     
     @IBAction func rightPlayerAttackButtonTapped(sender: AnyObject) {
-        rightPlayerAttackButton.enabled = false
-        NSTimer.scheduledTimerWithTimeInterval(1.5, target: self, selector: "enableLeftPlayerAttack", userInfo: nil, repeats: false)
+        rightPlayerAttackButton.hidden = true
+        print("right attack")
 
         if playerTwo.isAttackSuccessfulAgainst(playerOne) {
             statusText.text = "\(playerTwo.name) hit \(playerOne.name)!"
+            
+            playHitOrMissSound("hit")
+            
         } else {
             statusText.text = "\(playerTwo.name) missed!"
+            
+            playHitOrMissSound("miss")
         }
         
         if playerOne.isPlayerDefeated() {
             playerVictory()
+        } else {
+            NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "enableLeftPlayerAttack", userInfo: nil, repeats: false)
         }
     }
     
@@ -150,6 +188,7 @@ class ViewController: UIViewController {
     // MARK: - Methods
     
     func initializeGame() {
+        gamePhase = .CharacterSelection
         statusText.text = "Select a creature type:"
         playerNameLabel.text = ""
         playerNameLabel.hidden = true
@@ -164,10 +203,42 @@ class ViewController: UIViewController {
         
         whichPlayerIsFirst = Int(arc4random_uniform(2)) + 1
         
-        if whichPlayerIsFirst == 1 {
-            leftPlayerAttackButton.enabled = false
-        } else {
-            rightPlayerAttackButton.enabled = false
+        setupAudioPlayers()
+
+        // Loop the "setup background" music indefinitely until explicitly stopped.
+        audioPlayerSetupMusic.numberOfLoops = -1
+        audioPlayerSetupMusic.play()
+    }
+    
+    func setupAudioPlayers() {
+        
+        for (player, file) in audioDictionary {
+            
+            let path = NSBundle.mainBundle().pathForResource(file, ofType: ".wav")
+            let soundURL = NSURL(fileURLWithPath: path!)
+            
+            do {
+                
+                let sound = try AVAudioPlayer(contentsOfURL: soundURL)
+                sound.prepareToPlay()
+                
+                switch player {
+                case "audioBattleMusic": audioBattleMusic = sound
+                case "audioFanfare": audioFanfare = sound
+                case "audioFight": audioFight = sound
+                case "audioGoblinDeath": audioGoblinDeath = sound
+                case "audioHumanDeath": audioHumanDeath = sound
+                case "audioPlayerSetupMusic": audioPlayerSetupMusic = sound
+                case "audioPotionEffect": audioPotionEffect = sound
+                case "audioSwordAttack": audioSwordAttack = sound
+                case "audioAttackMissed": audioAttackMissed = sound
+                case "audioVictoryCry": audioVictoryCry = sound
+                default: break
+                }
+                
+            } catch let error as NSError {
+                print(error.debugDescription)
+            }
         }
     }
     
@@ -176,11 +247,33 @@ class ViewController: UIViewController {
         playerTwo = Player(name: playerTwoName, creatureType: playerTwoCreatureType, potion: playerTwoPotionSelection)
     }
     
+    func playHitOrMissSound(attack: String) {
+        if attack == "hit" {
+        
+            if audioSwordAttack.playing {
+                print("playing: attack")
+                audioSwordAttack.stop()
+                audioSwordAttack.prepareToPlay()
+            }
+            audioSwordAttack.play()
+            
+        } else {
+            
+            if audioAttackMissed.playing {
+                print("playing: missed")
+                audioAttackMissed.stop()
+                audioAttackMissed.prepareToPlay()
+            }
+            audioAttackMissed.play()
+        }
+    }
+    
     func initializeAttackRound() {
-        leftPlayerAttackButton.hidden = false
-        leftPlayerButton.hidden = false
-        rightPlayerAttackButton.hidden = false
-        rightPlayerButton.hidden = false
+        if whichPlayerIsFirst == 1 {
+            leftPlayerAttackButton.hidden = false
+        } else {
+            rightPlayerAttackButton.hidden = false
+        }
     }
     
     func setPlayerCreatureType(type: CreatureType) {
@@ -208,6 +301,8 @@ class ViewController: UIViewController {
     }
     
     func setPlayerPotionSelection(potion: PotionType) {
+        audioPotionEffect.play()
+        
         if firstPersonIsChoosingOptions {
             
             playerOnePotionSelection = potion
@@ -222,7 +317,11 @@ class ViewController: UIViewController {
     
     func proceedToCharacterSelectionPhase() {
         
-        if !playerSetupComplete {
+        if playerSetupComplete {
+            
+            proceedToAttackPhase()
+            
+        } else {
             
             gamePhase = .CharacterSelection
             statusText.text = "Select a creature type:"
@@ -230,10 +329,6 @@ class ViewController: UIViewController {
             leftPlayerButton.hidden = false
             rightPlayerButton.hidden = false
             
-        } else {
-            
-            proceedToAttackPhase()
-
         }
     }
     
@@ -255,20 +350,32 @@ class ViewController: UIViewController {
     }
     
     func proceedToAttackPhase() {
-        
         gamePhase = .AttackRound
-        statusText.text = "Attack!"
+        statusText.text = "Players ready to fight..."
         potionStackView.hidden = true
+        leftPlayerButton.hidden = false
+        rightPlayerButton.hidden = false
+
         initializePlayers()
-        initializeAttackRound()
+        audioPlayerSetupMusic.stop()
+
+        NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "initializeAttackRound", userInfo: nil, repeats: false)
+        
+        statusText.text = "FIGHT!"
+        audioFight.play()
+
+        let delay: NSTimeInterval = 1.0
+        let now: NSTimeInterval = audioBattleMusic.deviceCurrentTime
+        audioBattleMusic.numberOfLoops = -1
+        audioBattleMusic.playAtTime(NSTimeInterval(now + delay))
     }
     
     func enableLeftPlayerAttack() {
-        leftPlayerAttackButton.enabled = true
+        leftPlayerAttackButton.hidden = false
     }
     
     func enableRightPlayerAttack() {
-        rightPlayerAttackButton.enabled = true
+        rightPlayerAttackButton.hidden = false
     }
     
     func playerVictory() {
@@ -276,6 +383,8 @@ class ViewController: UIViewController {
     }
     
     func setupVictory() {
+        audioVictoryCry.play()
+
         if playerOne.isPlayerDefeated() {
             statusText.text = "\(playerTwo.name) is Victorious!"
         } else {
