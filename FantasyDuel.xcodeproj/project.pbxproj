@@ -24,6 +24,7 @@
 		D3D67B341C934B38001569D9 /* snd_potion-effect.wav in Resources */ = {isa = PBXBuildFile; fileRef = D3D67B2B1C934B38001569D9 /* snd_potion-effect.wav */; };
 		D3D67B351C934B38001569D9 /* snd_sword_attack.wav in Resources */ = {isa = PBXBuildFile; fileRef = D3D67B2C1C934B38001569D9 /* snd_sword_attack.wav */; };
 		D3D67B361C934B38001569D9 /* snd_victory_cry.wav in Resources */ = {isa = PBXBuildFile; fileRef = D3D67B2D1C934B38001569D9 /* snd_victory_cry.wav */; };
+		D3D67B381C936A64001569D9 /* snd_missed.wav in Resources */ = {isa = PBXBuildFile; fileRef = D3D67B371C936A64001569D9 /* snd_missed.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		D3D67B2B1C934B38001569D9 /* snd_potion-effect.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "snd_potion-effect.wav"; sourceTree = "<group>"; };
 		D3D67B2C1C934B38001569D9 /* snd_sword_attack.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = snd_sword_attack.wav; sourceTree = "<group>"; };
 		D3D67B2D1C934B38001569D9 /* snd_victory_cry.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = snd_victory_cry.wav; sourceTree = "<group>"; };
+		D3D67B371C936A64001569D9 /* snd_missed.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = snd_missed.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +102,7 @@
 				D3D67B271C934B38001569D9 /* snd_fight.wav */,
 				D3D67B281C934B38001569D9 /* snd_goblin_death.wav */,
 				D3D67B291C934B38001569D9 /* snd_human_death.wav */,
+				D3D67B371C936A64001569D9 /* snd_missed.wav */,
 				D3D67B2A1C934B38001569D9 /* snd_player_setup.wav */,
 				D3D67B2B1C934B38001569D9 /* snd_potion-effect.wav */,
 				D3D67B2C1C934B38001569D9 /* snd_sword_attack.wav */,
@@ -174,6 +177,7 @@
 				D3D67B361C934B38001569D9 /* snd_victory_cry.wav in Resources */,
 				D3D67B2F1C934B38001569D9 /* snd_fanfare.wav in Resources */,
 				D315C1EF1C90C8C200303C95 /* LaunchScreen.storyboard in Resources */,
+				D3D67B381C936A64001569D9 /* snd_missed.wav in Resources */,
 				D3D67B331C934B38001569D9 /* snd_player_setup.wav in Resources */,
 				D3D67B301C934B38001569D9 /* snd_fight.wav in Resources */,
 				D3D67B311C934B38001569D9 /* snd_goblin_death.wav in Resources */,
