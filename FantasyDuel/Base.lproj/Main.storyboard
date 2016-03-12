@@ -30,13 +30,15 @@
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="text-holder" translatesAutoresizingMaskIntoConstraints="NO" id="L8Q-gT-V7l">
-                                <rect key="frame" x="100" y="48" width="400" height="54"/>
+                                <rect key="frame" x="50" y="48" width="500" height="54"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="54" id="N8d-pN-AKm">
                                         <variation key="heightClass=regular-widthClass=regular" constant="70"/>
                                     </constraint>
-                                    <constraint firstAttribute="width" constant="400" id="onZ-cS-RRi">
-                                        <variation key="heightClass=regular-widthClass=regular" constant="620"/>
+                                    <constraint firstAttribute="width" constant="500" id="onZ-cS-RRi">
+                                        <variation key="heightClass=compact" constant="500"/>
+                                        <variation key="heightClass=compact-widthClass=regular" constant="600"/>
+                                        <variation key="heightClass=regular-widthClass=regular" constant="900"/>
                                     </constraint>
                                 </constraints>
                             </imageView>
@@ -118,7 +120,7 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Health" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7ie-MP-SWQ">
-                                                <rect key="frame" x="30" y="120" width="59" height="24"/>
+                                                <rect key="frame" x="31" y="120" width="59" height="24"/>
                                                 <fontDescription key="fontDescription" name="AppleSDGothicNeo-Bold" family="Apple SD Gothic Neo" pointSize="20"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -257,6 +259,136 @@
                                     <action selector="rightPlayerAttackButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="tuK-Sw-U9z"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="parchment" translatesAutoresizingMaskIntoConstraints="NO" id="OaJ-zH-XQI">
+                                <rect key="frame" x="0.0" y="416" width="106" height="130"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="130" id="MXN-Fl-Gib">
+                                        <variation key="heightClass=regular-widthClass=regular" constant="260"/>
+                                    </constraint>
+                                    <constraint firstAttribute="width" constant="106" id="z3w-PE-PCb">
+                                        <variation key="heightClass=regular-widthClass=regular" constant="178"/>
+                                    </constraint>
+                                </constraints>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="uX9-As-Jzl">
+                                <rect key="frame" x="21" y="429" width="64" height="115"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HP: 100" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zg1-Bj-aEn">
+                                        <rect key="frame" x="0.0" y="0.0" width="64" height="17"/>
+                                        <fontDescription key="fontDescription" name="AppleSDGothicNeo-Medium" family="Apple SD Gothic Neo" pointSize="14"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                        <variation key="heightClass=regular-widthClass=regular">
+                                            <fontDescription key="fontDescription" name="AppleSDGothicNeo-Medium" family="Apple SD Gothic Neo" pointSize="24"/>
+                                        </variation>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ATK: 10" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FJm-OD-9qb">
+                                        <rect key="frame" x="0.0" y="17" width="64" height="17"/>
+                                        <fontDescription key="fontDescription" name="AppleSDGothicNeo-Medium" family="Apple SD Gothic Neo" pointSize="14"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                        <variation key="heightClass=regular-widthClass=regular">
+                                            <fontDescription key="fontDescription" name="AppleSDGothicNeo-Medium" family="Apple SD Gothic Neo" pointSize="24"/>
+                                        </variation>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DEF: 10" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zmu-0T-FSs">
+                                        <rect key="frame" x="0.0" y="34" width="64" height="17"/>
+                                        <fontDescription key="fontDescription" name="AppleSDGothicNeo-Medium" family="Apple SD Gothic Neo" pointSize="14"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                        <variation key="heightClass=regular-widthClass=regular">
+                                            <fontDescription key="fontDescription" name="AppleSDGothicNeo-Medium" family="Apple SD Gothic Neo" pointSize="24"/>
+                                        </variation>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1X0-gI-zAx">
+                                        <rect key="frame" x="0.0" y="51" width="64" height="64"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="64" id="de7-c3-Ffd">
+                                                <variation key="heightClass=regular-widthClass=regular" constant="128"/>
+                                            </constraint>
+                                            <constraint firstAttribute="height" constant="64" id="m8i-ng-n7t">
+                                                <variation key="heightClass=regular-widthClass=regular" constant="128"/>
+                                            </constraint>
+                                        </constraints>
+                                        <state key="normal" image="potion_health"/>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="parchment" translatesAutoresizingMaskIntoConstraints="NO" id="AVO-sp-J2A">
+                                <rect key="frame" x="494" y="416" width="106" height="130"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="130" id="Lvp-im-h4g">
+                                        <variation key="heightClass=regular-widthClass=regular" constant="260"/>
+                                    </constraint>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="106" id="NNX-g0-eEM"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="130" id="qyo-3o-Ilr"/>
+                                    <constraint firstAttribute="width" constant="106" id="tbm-bE-vjd">
+                                        <variation key="heightClass=regular-widthClass=regular" constant="178"/>
+                                    </constraint>
+                                </constraints>
+                                <variation key="heightClass=compact-widthClass=compact">
+                                    <mask key="constraints">
+                                        <exclude reference="NNX-g0-eEM"/>
+                                        <exclude reference="qyo-3o-Ilr"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=compact-widthClass=regular">
+                                    <mask key="constraints">
+                                        <exclude reference="NNX-g0-eEM"/>
+                                        <exclude reference="qyo-3o-Ilr"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <exclude reference="NNX-g0-eEM"/>
+                                        <exclude reference="qyo-3o-Ilr"/>
+                                    </mask>
+                                </variation>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="nnp-Wi-fWM">
+                                <rect key="frame" x="515" y="429" width="64" height="115"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HP: 100" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xxx-7z-228">
+                                        <rect key="frame" x="0.0" y="0.0" width="64" height="17"/>
+                                        <fontDescription key="fontDescription" name="AppleSDGothicNeo-Medium" family="Apple SD Gothic Neo" pointSize="14"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                        <variation key="heightClass=regular-widthClass=regular">
+                                            <fontDescription key="fontDescription" name="AppleSDGothicNeo-Medium" family="Apple SD Gothic Neo" pointSize="24"/>
+                                        </variation>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ATK: 10" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jam-5K-ONk">
+                                        <rect key="frame" x="0.0" y="17" width="64" height="17"/>
+                                        <fontDescription key="fontDescription" name="AppleSDGothicNeo-Medium" family="Apple SD Gothic Neo" pointSize="14"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                        <variation key="heightClass=regular-widthClass=regular">
+                                            <fontDescription key="fontDescription" name="AppleSDGothicNeo-Medium" family="Apple SD Gothic Neo" pointSize="24"/>
+                                        </variation>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DEF: 10" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h6q-U7-Wru">
+                                        <rect key="frame" x="0.0" y="34" width="64" height="17"/>
+                                        <fontDescription key="fontDescription" name="AppleSDGothicNeo-Medium" family="Apple SD Gothic Neo" pointSize="14"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                        <variation key="heightClass=regular-widthClass=regular">
+                                            <fontDescription key="fontDescription" name="AppleSDGothicNeo-Medium" family="Apple SD Gothic Neo" pointSize="24"/>
+                                        </variation>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BT6-n8-tlY">
+                                        <rect key="frame" x="0.0" y="51" width="64" height="64"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="64" id="DL5-sy-Xdw">
+                                                <variation key="heightClass=regular-widthClass=regular" constant="128"/>
+                                            </constraint>
+                                            <constraint firstAttribute="width" constant="64" id="yOf-c1-Hh4">
+                                                <variation key="heightClass=regular-widthClass=regular" constant="128"/>
+                                            </constraint>
+                                        </constraints>
+                                        <state key="normal" image="potion_health"/>
+                                    </button>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -265,8 +397,18 @@
                                 <variation key="heightClass=compact-widthClass=regular" constant="130"/>
                                 <variation key="heightClass=regular-widthClass=regular" constant="120"/>
                             </constraint>
+                            <constraint firstItem="dcZ-k7-ilA" firstAttribute="top" secondItem="OaJ-zH-XQI" secondAttribute="bottom" constant="2" id="1an-qZ-dhs">
+                                <variation key="heightClass=compact-widthClass=compact" constant="40"/>
+                                <variation key="heightClass=compact-widthClass=regular" constant="100"/>
+                                <variation key="heightClass=regular-widthClass=regular" constant="255"/>
+                            </constraint>
                             <constraint firstItem="bGK-0a-wAg" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="31" id="2zk-KN-gPe"/>
                             <constraint firstAttribute="trailing" secondItem="3yA-Bj-hff" secondAttribute="trailing" id="4Ag-G7-i3f"/>
+                            <constraint firstItem="dcZ-k7-ilA" firstAttribute="top" secondItem="uX9-As-Jzl" secondAttribute="bottom" constant="4" id="4pk-nU-gAl">
+                                <variation key="heightClass=compact-widthClass=compact" constant="46"/>
+                                <variation key="heightClass=compact-widthClass=regular" constant="104"/>
+                                <variation key="heightClass=regular-widthClass=regular" constant="275"/>
+                            </constraint>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="zSm-7v-lZf" secondAttribute="bottom" constant="50" id="4xl-0e-Xtk">
                                 <variation key="heightClass=compact-widthClass=compact" constant="39"/>
                                 <variation key="heightClass=compact-widthClass=regular" constant="52"/>
@@ -274,16 +416,22 @@
                             </constraint>
                             <constraint firstItem="bGK-0a-wAg" firstAttribute="centerY" secondItem="dcZ-k7-ilA" secondAttribute="centerY" id="5oj-9f-zvn"/>
                             <constraint firstItem="ib1-GA-tKE" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="8CZ-zL-Wd4"/>
+                            <constraint firstItem="dcZ-k7-ilA" firstAttribute="top" secondItem="nnp-Wi-fWM" secondAttribute="bottom" constant="4" id="DxA-ec-TYU">
+                                <variation key="heightClass=compact-widthClass=compact" constant="46"/>
+                                <variation key="heightClass=compact-widthClass=regular" constant="104"/>
+                                <variation key="heightClass=regular-widthClass=regular" constant="275"/>
+                            </constraint>
                             <constraint firstItem="bGK-0a-wAg" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="90" id="FKX-Ww-plF">
                                 <variation key="heightClass=compact-widthClass=regular" constant="130"/>
                                 <variation key="heightClass=regular-widthClass=regular" constant="120"/>
                             </constraint>
                             <constraint firstAttribute="trailing" secondItem="dcZ-k7-ilA" secondAttribute="trailing" id="Fml-ay-keY"/>
+                            <constraint firstItem="uX9-As-Jzl" firstAttribute="centerX" secondItem="OaJ-zH-XQI" secondAttribute="centerX" id="Fp1-c3-f8F"/>
                             <constraint firstItem="ld8-DA-5sm" firstAttribute="centerX" secondItem="JDz-lW-jaP" secondAttribute="centerX" id="IId-p5-hHG"/>
                             <constraint firstItem="zSm-7v-lZf" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="50" id="JOG-xG-KyX">
                                 <variation key="heightClass=compact-widthClass=compact" constant="110"/>
                                 <variation key="heightClass=compact-widthClass=regular" constant="150"/>
-                                <variation key="heightClass=regular-widthClass=regular" constant="150"/>
+                                <variation key="heightClass=regular-widthClass=regular" constant="180"/>
                             </constraint>
                             <constraint firstItem="dcZ-k7-ilA" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="NuI-lG-AbL"/>
                             <constraint firstItem="tAx-Xl-E5k" firstAttribute="trailing" secondItem="L8Q-gT-V7l" secondAttribute="trailing" id="PI6-bm-his"/>
@@ -301,16 +449,30 @@
                             <constraint firstAttribute="trailing" secondItem="JDz-lW-jaP" secondAttribute="trailing" constant="47" id="YrH-iJ-kAn">
                                 <variation key="heightClass=compact-widthClass=compact" constant="110"/>
                                 <variation key="heightClass=compact-widthClass=regular" constant="150"/>
-                                <variation key="heightClass=regular-widthClass=regular" constant="150"/>
+                                <variation key="heightClass=regular-widthClass=regular" constant="180"/>
                             </constraint>
                             <constraint firstItem="bGK-0a-wAg" firstAttribute="centerX" secondItem="zSm-7v-lZf" secondAttribute="centerX" id="eas-qM-gyR"/>
                             <constraint firstItem="dcZ-k7-ilA" firstAttribute="top" secondItem="JDz-lW-jaP" secondAttribute="bottom" id="haJ-Io-ZPX"/>
                             <constraint firstItem="PMk-1y-LHt" firstAttribute="top" secondItem="L8Q-gT-V7l" secondAttribute="bottom" constant="27" id="icq-TV-1hd">
                                 <variation key="heightClass=regular-widthClass=regular" constant="50"/>
                             </constraint>
+                            <constraint firstItem="nnp-Wi-fWM" firstAttribute="centerX" secondItem="AVO-sp-J2A" secondAttribute="centerX" id="jk3-eV-AkL"/>
+                            <constraint firstAttribute="trailing" secondItem="AVO-sp-J2A" secondAttribute="trailing" id="kkV-DF-87k">
+                                <variation key="heightClass=compact-widthClass=regular" constant="20"/>
+                                <variation key="heightClass=regular-widthClass=regular" constant="20"/>
+                            </constraint>
                             <constraint firstItem="3yA-Bj-hff" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="kn0-Mx-fOb"/>
                             <constraint firstItem="tAx-Xl-E5k" firstAttribute="leading" secondItem="L8Q-gT-V7l" secondAttribute="leading" id="l5F-Ln-1sT"/>
+                            <constraint firstItem="dcZ-k7-ilA" firstAttribute="top" secondItem="AVO-sp-J2A" secondAttribute="bottom" constant="2" id="nA3-JL-kYF">
+                                <variation key="heightClass=compact-widthClass=compact" constant="40"/>
+                                <variation key="heightClass=compact-widthClass=regular" constant="100"/>
+                                <variation key="heightClass=regular-widthClass=regular" constant="255"/>
+                            </constraint>
                             <constraint firstItem="tAx-Xl-E5k" firstAttribute="centerX" secondItem="L8Q-gT-V7l" secondAttribute="centerX" id="oWx-XB-qvJ"/>
+                            <constraint firstItem="OaJ-zH-XQI" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="pq6-WQ-8Hm">
+                                <variation key="heightClass=compact-widthClass=regular" constant="20"/>
+                                <variation key="heightClass=regular-widthClass=regular" constant="20"/>
+                            </constraint>
                             <constraint firstItem="Iuv-wd-Mrd" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="qAs-QL-gRK"/>
                             <constraint firstItem="ib1-GA-tKE" firstAttribute="top" secondItem="PMk-1y-LHt" secondAttribute="bottom" constant="24" id="qjl-99-b5y"/>
                             <constraint firstItem="zSm-7v-lZf" firstAttribute="top" secondItem="bGK-0a-wAg" secondAttribute="bottom" constant="26" id="seh-2q-7QJ"/>
@@ -342,13 +504,14 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="588" y="774"/>
+            <point key="canvasLocation" x="514" y="400"/>
         </scene>
     </scenes>
     <resources>
         <image name="bg" width="1024" height="677"/>
         <image name="enemy" width="241" height="348"/>
         <image name="ground" width="1024" height="106"/>
+        <image name="parchment" width="320" height="460"/>
         <image name="player" width="406" height="441"/>
         <image name="player1attackbtn" width="212" height="78"/>
         <image name="player2attackbtn" width="212" height="78"/>
