@@ -39,18 +39,18 @@ class ViewController: UIViewController {
     
     // MARK: - Properties
     
-    var playerOne: Player!
-    var playerOneCreatureType: CreatureType!
-    var playerOneName = ""
-    var playerOnePotionSelection: PotionType!
+    var leftPlayer: Player!
+    var leftPlayerCreatureType: CreatureType!
+    var leftPlayerName = ""
+    var leftPlayerPotionSelection: PotionType!
 
-    var playerTwo: Player!
-    var playerTwoCreatureType: CreatureType!
-    var playerTwoName = ""
-    var playerTwoPotionSelection: PotionType!
+    var rightPlayer: Player!
+    var rightPlayerCreatureType: CreatureType!
+    var rightPlayerName = ""
+    var rightPlayerPotionSelection: PotionType!
     
     var gamePhase: GamePhase = .CharacterSelection
-    var firstPersonIsChoosingOptions = true
+    var leftPlayerIsChoosingOptions = true
     var playerSetupComplete = false
     var whichPlayerIsFirst = 1
     
@@ -144,18 +144,18 @@ class ViewController: UIViewController {
         leftPlayerAttackButton.hidden = true
         print("left attack")
         
-        if playerOne.isAttackSuccessfulAgainst(playerTwo) {
-            statusText.text = "\(playerOne.name) hit \(playerTwo.name)!"
+        if leftPlayer.isAttackSuccessfulAgainst(rightPlayer) {
+            statusText.text = "\(leftPlayer.name) hit \(rightPlayer.name)!"
             
             playHitOrMissSound("hit")
 
         } else {
-            statusText.text = "\(playerOne.name) missed!"
+            statusText.text = "\(leftPlayer.name) missed!"
 
             playHitOrMissSound("miss")
         }
 
-        if playerTwo.isPlayerDefeated() {
+        if rightPlayer.isPlayerDefeated() {
             playerVictory()
         } else {
             NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "enableRightPlayerAttack", userInfo: nil, repeats: false)
@@ -166,18 +166,18 @@ class ViewController: UIViewController {
         rightPlayerAttackButton.hidden = true
         print("right attack")
 
-        if playerTwo.isAttackSuccessfulAgainst(playerOne) {
-            statusText.text = "\(playerTwo.name) hit \(playerOne.name)!"
+        if rightPlayer.isAttackSuccessfulAgainst(leftPlayer) {
+            statusText.text = "\(rightPlayer.name) hit \(leftPlayer.name)!"
             
             playHitOrMissSound("hit")
             
         } else {
-            statusText.text = "\(playerTwo.name) missed!"
+            statusText.text = "\(rightPlayer.name) missed!"
             
             playHitOrMissSound("miss")
         }
         
-        if playerOne.isPlayerDefeated() {
+        if leftPlayer.isPlayerDefeated() {
             playerVictory()
         } else {
             NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "enableLeftPlayerAttack", userInfo: nil, repeats: false)
@@ -199,7 +199,7 @@ class ViewController: UIViewController {
         leftPlayerAttackButton.hidden = true
         rightPlayerAttackButton.hidden = true
         playerSetupComplete = false
-        firstPersonIsChoosingOptions = true
+        leftPlayerIsChoosingOptions = true
         
         whichPlayerIsFirst = Int(arc4random_uniform(2)) + 1
         
@@ -243,8 +243,8 @@ class ViewController: UIViewController {
     }
     
     func initializePlayers() {
-        playerOne = Player(name: playerOneName, creatureType: playerOneCreatureType, potion: playerOnePotionSelection)
-        playerTwo = Player(name: playerTwoName, creatureType: playerTwoCreatureType, potion: playerTwoPotionSelection)
+        leftPlayer = Player(name: leftPlayerName, creatureType: leftPlayerCreatureType, potion: leftPlayerPotionSelection)
+        rightPlayer = Player(name: rightPlayerName, creatureType: rightPlayerCreatureType, potion: rightPlayerPotionSelection)
     }
     
     func playHitOrMissSound(attack: String) {
@@ -277,24 +277,24 @@ class ViewController: UIViewController {
     }
     
     func setPlayerCreatureType(type: CreatureType) {
-        if firstPersonIsChoosingOptions {
+        if leftPlayerIsChoosingOptions {
             
-            playerOneCreatureType = type
+            leftPlayerCreatureType = type
             
         } else {
             
-            playerTwoCreatureType = type
+            rightPlayerCreatureType = type
         }
     }
     
     func setPlayerName() {
-        if firstPersonIsChoosingOptions {
+        if leftPlayerIsChoosingOptions {
             
-            playerOneName = playerNameLabel.text ?? "Player 1"
+            leftPlayerName = playerNameLabel.text ?? "Left"
 
         } else {
             
-            playerTwoName = playerNameLabel.text ?? "Player 2"
+            rightPlayerName = playerNameLabel.text ?? "Right"
         }
         
         playerNameLabel.text = ""
@@ -303,14 +303,14 @@ class ViewController: UIViewController {
     func setPlayerPotionSelection(potion: PotionType) {
         audioPotionEffect.play()
         
-        if firstPersonIsChoosingOptions {
+        if leftPlayerIsChoosingOptions {
             
-            playerOnePotionSelection = potion
-            firstPersonIsChoosingOptions = false
+            leftPlayerPotionSelection = potion
+            leftPlayerIsChoosingOptions = false
             
         } else {
             
-            playerTwoPotionSelection = potion
+            rightPlayerPotionSelection = potion
             playerSetupComplete = true
         }
     }
@@ -385,10 +385,10 @@ class ViewController: UIViewController {
     func setupVictory() {
         audioVictoryCry.play()
 
-        if playerOne.isPlayerDefeated() {
-            statusText.text = "\(playerTwo.name) is Victorious!"
+        if leftPlayer.isPlayerDefeated() {
+            statusText.text = "\(rightPlayer.name) is Victorious!"
         } else {
-            statusText.text = "\(playerOne.name) is Victorious!"
+            statusText.text = "\(leftPlayer.name) is Victorious!"
         }
 
         NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: "initializeGame", userInfo: nil, repeats: false)
