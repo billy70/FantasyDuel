@@ -156,7 +156,9 @@ class ViewController: UIViewController {
         leftPlayerPotion.enabled = false
         
         if leftPlayer.isAttackSuccessfulAgainst(rightPlayer) {
-            statusText.text = "\(leftPlayer.name) hit \(rightPlayer.name)!"
+            let damage = leftPlayer.attackPower - rightPlayer.armorRating
+            let pointText = (damage == 1 ? "point" : "points")
+            statusText.text = "\(leftPlayer.name) hit for \(damage) \(pointText)!"
             
             playHitOrMissSound("hit")
             updateRightPlayerStats()
@@ -179,7 +181,9 @@ class ViewController: UIViewController {
         rightPlayerPotion.enabled = false
 
         if rightPlayer.isAttackSuccessfulAgainst(leftPlayer) {
-            statusText.text = "\(rightPlayer.name) hit \(leftPlayer.name)!"
+            let damage = rightPlayer.attackPower - leftPlayer.armorRating
+            let pointText = (damage == 1 ? "point" : "points")
+            statusText.text = "\(rightPlayer.name) hit for \(damage) \(pointText)!"
             
             playHitOrMissSound("hit")
             updateLeftPlayerStats()
@@ -205,6 +209,14 @@ class ViewController: UIViewController {
         leftPlayerPotion.hidden = true
         updateLeftPlayerStats()
         
+        let potion: String
+        switch leftPlayer.potion {
+        case .Health: potion = "a health"
+        case .Attack: potion = "an attack"
+        case .Armor: potion = "an armor"
+        }
+        statusText.text = "\(leftPlayer.name) drank \(potion) potion."
+        
         NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "enableRightPlayerAttack", userInfo: nil, repeats: false)
     }
     
@@ -216,6 +228,14 @@ class ViewController: UIViewController {
         rightPlayerPotion.hidden = true
         updateRightPlayerStats()
         
+        let potion: String
+        switch rightPlayer.potion {
+        case .Health: potion = "a health"
+        case .Attack: potion = "an attack"
+        case .Armor: potion = "an armor"
+        }
+        statusText.text = "\(rightPlayer.name) drank \(potion) potion."
+
         NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "enableLeftPlayerAttack", userInfo: nil, repeats: false)
     }
     
@@ -224,7 +244,7 @@ class ViewController: UIViewController {
     
     func initializeGame() {
         gamePhase = .CharacterSelection
-        statusText.text = "Select a creature type:"
+        statusText.text = "Left player - Select a creature type:"
         playerNameLabel.text = ""
         playerNameLabel.hidden = true
         potionStackView.hidden = true
@@ -239,7 +259,9 @@ class ViewController: UIViewController {
         rightParchment.hidden = true
         playerSetupComplete = false
         leftPlayerIsChoosingOptions = true
-        
+        leftPlayerButton.setImage(UIImage(named: "goblin.png"), forState: UIControlState.Normal)
+        rightPlayerButton.setImage(UIImage(named: "human.png"), forState: UIControlState.Normal)
+
         whichPlayerIsFirst = Int(arc4random_uniform(2)) + 1
         
         setupAudioPlayers()
@@ -283,6 +305,8 @@ class ViewController: UIViewController {
     
     func initializePlayers() {
         var potion: String
+        var creatureName: String
+        var creatureImage: UIImage
 
         // Setup the left player.
         leftPlayer = Player(name: leftPlayerName, creatureType: leftPlayerCreatureType, potion: leftPlayerPotionSelection)
@@ -296,6 +320,18 @@ class ViewController: UIViewController {
         updateLeftPlayerStats()
         leftPlayerPotion.setImage(UIImage(named: potion), forState: UIControlState.Normal)
         
+        switch leftPlayerCreatureType! {
+        case CreatureType.Human: creatureName = "human.png"
+        case CreatureType.Goblin: creatureName = "goblin.png"
+        }
+        
+        creatureImage = UIImage(named: creatureName)!
+        if leftPlayerCreatureType! == CreatureType.Human {
+            creatureImage = UIImage(CGImage: creatureImage.CGImage!, scale: creatureImage.scale, orientation: UIImageOrientation.UpMirrored)
+        }
+        
+        leftPlayerButton.setImage(creatureImage, forState: UIControlState.Normal)
+        
         
         // Setup the right player.
         rightPlayer = Player(name: rightPlayerName, creatureType: rightPlayerCreatureType, potion: rightPlayerPotionSelection)
@@ -308,6 +344,18 @@ class ViewController: UIViewController {
         
         updateRightPlayerStats()
         rightPlayerPotion.setImage(UIImage(named: potion), forState: UIControlState.Normal)
+
+        switch rightPlayerCreatureType! {
+        case CreatureType.Human: creatureName = "human.png"
+        case CreatureType.Goblin: creatureName = "goblin.png"
+        }
+
+        creatureImage = UIImage(named: creatureName)!
+        if rightPlayerCreatureType! == CreatureType.Goblin {
+            creatureImage = UIImage(CGImage: creatureImage.CGImage!, scale: creatureImage.scale, orientation: UIImageOrientation.UpMirrored)
+        }
+        
+        rightPlayerButton.setImage(creatureImage, forState: UIControlState.Normal)
     }
     
     func playHitOrMissSound(attack: String) {
@@ -401,7 +449,12 @@ class ViewController: UIViewController {
         } else {
             
             gamePhase = .CharacterSelection
-            statusText.text = "Select a creature type:"
+            
+            if leftPlayerIsChoosingOptions {
+                statusText.text = "Left player - Select a creature type:"
+            } else {
+                statusText.text = "Right player - Select a creature type:"
+            }
             potionStackView.hidden = true
             leftPlayerButton.hidden = false
             rightPlayerButton.hidden = false
@@ -428,13 +481,14 @@ class ViewController: UIViewController {
     
     func proceedToAttackPhase() {
         gamePhase = .AttackRound
-        statusText.text = "Players ready to fight..."
+        audioPlayerSetupMusic.stop()
         potionStackView.hidden = true
         leftPlayerButton.hidden = false
         rightPlayerButton.hidden = false
 
         initializePlayers()
-        audioPlayerSetupMusic.stop()
+        let firstPlayer = whichPlayerIsFirst == 1 ? "\(leftPlayer.name)" : "\(rightPlayer.name)"
+        statusText.text = "\(firstPlayer) gets to attack first."
 
         NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "initializeAttackRound", userInfo: nil, repeats: false)
         
