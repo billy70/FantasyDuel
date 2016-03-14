@@ -118,7 +118,7 @@ class Player {
         var attackBonus = 0
         
         if self._creatureType == CreatureType.Goblin {
-            attackBonus = 2
+            attackBonus = 3
         }
 
         return attackPower + attackBonus
@@ -187,9 +187,9 @@ class Player {
     func usePotion() {
         switch potion {
         case .Health:
-            hitPoints += 2
+            hitPoints += 5
         case .Armor:
-            armorRating += 2
+            armorRating += 6
         case .Attack:
             attackPower += 2
         }
