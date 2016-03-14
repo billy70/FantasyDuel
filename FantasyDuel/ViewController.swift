@@ -170,6 +170,15 @@ class ViewController: UIViewController {
         }
 
         if rightPlayer.isPlayerDefeated() {
+            
+            if rightPlayer.creatureType == CreatureType.Human {
+                audioHumanDeath.play()
+            } else {
+                audioGoblinDeath.play()
+            }
+            
+            rightPlayerButton.hidden = true
+            
             playerVictory()
         } else {
             NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "enableRightPlayerAttack", userInfo: nil, repeats: false)
@@ -195,6 +204,15 @@ class ViewController: UIViewController {
         }
         
         if leftPlayer.isPlayerDefeated() {
+
+            if leftPlayer.creatureType == CreatureType.Human {
+                audioHumanDeath.play()
+            } else {
+                audioGoblinDeath.play()
+            }
+            
+            leftPlayerButton.hidden = true
+            
             playerVictory()
         } else {
             NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "enableLeftPlayerAttack", userInfo: nil, repeats: false)
@@ -521,7 +539,7 @@ class ViewController: UIViewController {
     }
     
     func playerVictory() {
-        NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "setupVictory", userInfo: nil, repeats: false)
+        NSTimer.scheduledTimerWithTimeInterval(2.5, target: self, selector: "setupVictory", userInfo: nil, repeats: false)
     }
     
     func setupVictory() {
@@ -533,7 +551,7 @@ class ViewController: UIViewController {
             statusText.text = "\(leftPlayer.name) is Victorious!"
         }
 
-        NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: "initializeGame", userInfo: nil, repeats: false)
+        NSTimer.scheduledTimerWithTimeInterval(7.0, target: self, selector: "initializeGame", userInfo: nil, repeats: false)
     }
 }
 
