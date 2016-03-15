@@ -108,34 +108,64 @@ class Player {
     // MARK: - Methods - private
     
     private func getRandomAttackPower() -> Int {
-        // Generate a random number from 6 - 10 for the base attack power once per game.
         var attackPower = 0
+        var attackBonus = 0
+
+        // The goblin's attack power ranges from 13-17,
+        // with a creature type bonus of 6; therefore,
+        // goblins ultimately have an attack range of 19-23.
+        if self._creatureType == CreatureType.Goblin {
+
+            while attackPower < 13 {
+                attackPower = Int(arc4random_uniform(17)) + 1
+            }
         
-        while attackPower < 6 {
-            attackPower = Int(arc4random_uniform(10) + 1)
+            attackBonus = 6
         }
         
-        var attackBonus = 0
-        
-        if self._creatureType == CreatureType.Goblin {
-            attackBonus = 3
+        // The human's attack power ranges from 16-19,
+        // but does not get an attack bonus; therefore,
+        // humans ultimately have an attack range of 16-19.
+        if self._creatureType == CreatureType.Human {
+            
+            while attackPower < 16 {
+                attackPower = Int(arc4random_uniform(19)) + 1
+            }
         }
 
         return attackPower + attackBonus
     }
     
     private func getRandomArmorRating() -> Int {
-        // Generate a random number from 1 - 5 for the base armor rating once per game.
         // The armor rating is used to absorb damage; for example,
-        // if the player is hit with 7 attack power, and their armor
-        // rating is 3, then the player will only be damaged for 4 hit points.
+        // if the player is hit with 18 attack power, and their armor
+        // rating is 12, then the player will only be damaged for 6 hit points.
+        var armorRating = 0
         var armorBonus = 0
         
+        // The human's armor rating ranges from 1-6,
+        // with a creature type bonus of 6; therfore,
+        // humans ultimately have an armor rating of 7-12.
         if self._creatureType == CreatureType.Human {
-            armorBonus = 3
+
+            while armorRating < 1 {
+                armorRating = Int(arc4random_uniform(6)) + 1
+            }
+            
+            armorBonus = 6
         }
         
-        return Int(arc4random_uniform(5) + 1) + armorBonus
+        // The goblin's armor rating ranges from 3-7,
+        // but does not get an armor rating bonus; therefore,
+        // goblins ultimately have an armor rating of 3-7.
+        if self._creatureType == CreatureType.Goblin {
+            
+            while armorRating < 3 {
+                armorRating = Int(arc4random_uniform(7)) + 1
+            }
+        }
+        
+        return armorRating + armorBonus
     }
     
     private func takeDamage(attackPower: Int) {
@@ -187,11 +217,11 @@ class Player {
     func usePotion() {
         switch potion {
         case .Health:
-            hitPoints += 5
+            hitPoints += 15
         case .Armor:
-            armorRating += 6
+            armorRating += 3
         case .Attack:
-            attackPower += 2
+            attackPower += 3
         }
     }
 }
