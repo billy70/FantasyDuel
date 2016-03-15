@@ -22,7 +22,7 @@ enum GamePhase {
 
 // MARK: - ViewController class
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextFieldDelegate {
 
     
     // MARK: - Outlets
@@ -103,7 +103,7 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     
     // MARK: - Action methods
     
@@ -262,6 +262,7 @@ class ViewController: UIViewController {
     
     func initializeGame() {
         gamePhase = .CharacterSelection
+        playerNameLabel.delegate = self
         statusText.text = "Left player - Select a creature type:"
         playerNameLabel.text = ""
         playerNameLabel.hidden = true
@@ -319,6 +320,11 @@ class ViewController: UIViewController {
                 print(error.debugDescription)
             }
         }
+    }
+    
+    func textFieldShouldReturn(userText: UITextField) -> Bool {
+        userText.resignFirstResponder()
+        return true;
     }
     
     func initializePlayers() {
