@@ -9,6 +9,7 @@
 import Foundation
 
 enum PotionType {
+    case None
     case Health
     case Armor
     case Attack
