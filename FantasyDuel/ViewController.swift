@@ -52,18 +52,21 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     var leftPlayer: Player!
     var leftPlayerCreatureType: CreatureType!
-    var leftPlayerName = ""
+    var leftPlayerName = "Left player"
     var leftPlayerPotionSelection: PotionType!
+    var leftPlayerRoundsWon = 0
 
     var rightPlayer: Player!
     var rightPlayerCreatureType: CreatureType!
-    var rightPlayerName = ""
+    var rightPlayerName = "Right player"
     var rightPlayerPotionSelection: PotionType!
+    var rightPlayerRoundsWon = 0
     
     var gamePhase: GamePhase = .CharacterSelection
     var leftPlayerIsChoosingOptions = true
     var playerSetupComplete = false
-    var whichPlayerIsFirst = 1
+    var whichPlayerHasInitiative = "left"
+    var roundNumber = 1
     
     var audioBattleMusic: AVAudioPlayer!
     var audioFanfare: AVAudioPlayer!
@@ -138,17 +141,77 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func healthPotionTapped(sender: AnyObject) {
         setPlayerPotionSelection(PotionType.Health)
-        proceedToCharacterSelectionPhase()
+        
+        leftPlayerIsChoosingOptions = false
+        
+        // Players get to select a new potion in between rounds,
+        // so, if this is still the first round, the players
+        // are still in the player setup phase at the start
+        // of a 3-round game.
+        if !playerSetupComplete && roundNumber == 1 {
+            
+            if leftPlayerIsChoosingOptions == false {
+                proceedToCharacterSelectionPhase()
+            }
+            
+        } else {
+            
+            if rightPlayerPotionSelection == PotionType.None {
+                proceedToPotionSelectionPhase()
+            } else {
+                proceedToAttackPhase()
+            }
+        }
     }
     
     @IBAction func armorPotionTapped(sender: AnyObject) {
         setPlayerPotionSelection(PotionType.Armor)
-        proceedToCharacterSelectionPhase()
+
+        leftPlayerIsChoosingOptions = false
+        
+        // Players get to select a new potion in between rounds,
+        // so, if this is still the first round, the players
+        // are still in the player setup phase at the start
+        // of a 3-round game.
+        if !playerSetupComplete && roundNumber == 1 {
+            
+            if leftPlayerIsChoosingOptions == false {
+                proceedToCharacterSelectionPhase()
+            }
+            
+        } else {
+            
+            if rightPlayerPotionSelection == PotionType.None {
+                proceedToPotionSelectionPhase()
+            } else {
+                proceedToAttackPhase()
+            }
+        }
     }
     
     @IBAction func attackPotionTapped(sender: AnyObject) {
         setPlayerPotionSelection(PotionType.Attack)
-        proceedToCharacterSelectionPhase()
+
+        leftPlayerIsChoosingOptions = false
+        
+        // Players get to select a new potion in between rounds,
+        // so, if this is still the first round, the players
+        // are still in the player setup phase at the start
+        // of a 3-round game.
+        if !playerSetupComplete && roundNumber == 1 {
+            
+            if leftPlayerIsChoosingOptions == false {
+                proceedToCharacterSelectionPhase()
+            }
+            
+        } else {
+            
+            if rightPlayerPotionSelection == PotionType.None {
+                proceedToPotionSelectionPhase()
+            } else {
+                proceedToAttackPhase()
+            }
+        }
     }
     
     @IBAction func leftPlayerAttackButtonTapped(sender: AnyObject) {
@@ -179,7 +242,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             
             rightPlayerButton.hidden = true
             
-            playerVictory()
+            playerRoundVictory()
         } else {
             NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "enableRightPlayerAttack", userInfo: nil, repeats: false)
         }
@@ -213,13 +276,25 @@ class ViewController: UIViewController, UITextFieldDelegate {
             
             leftPlayerButton.hidden = true
             
-            playerVictory()
+            playerRoundVictory()
         } else {
             NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "enableLeftPlayerAttack", userInfo: nil, repeats: false)
         }
     }
     
     @IBAction func leftPlayerPotionTapped(sender: AnyObject) {
+        let potion: String
+        switch leftPlayer.potion {
+        case .None: potion = ""
+        case .Health: potion = "a health"
+        case .Attack: potion = "an attack"
+        case .Armor: potion = "an armor"
+        }
+        
+        if leftPlayerPotion != .None {
+            statusText.text = "\(leftPlayer.name) drank \(potion) potion."
+        }
+        
         // You forfeit your attack if you use your potion.
         leftPlayer.usePotion()
         audioPotionEffect.play()
@@ -227,18 +302,22 @@ class ViewController: UIViewController, UITextFieldDelegate {
         leftPlayerPotion.hidden = true
         updateLeftPlayerStats()
         
-        let potion: String
-        switch leftPlayer.potion {
-        case .Health: potion = "a health"
-        case .Attack: potion = "an attack"
-        case .Armor: potion = "an armor"
-        }
-        statusText.text = "\(leftPlayer.name) drank \(potion) potion."
-        
         NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "enableRightPlayerAttack", userInfo: nil, repeats: false)
     }
     
     @IBAction func rightPlayerPotionTapped(sender: AnyObject) {
+        let potion: String
+        switch rightPlayer.potion {
+        case .None: potion = ""
+        case .Health: potion = "a health"
+        case .Attack: potion = "an attack"
+        case .Armor: potion = "an armor"
+        }
+        
+        if rightPlayerPotion != .None {
+            statusText.text = "\(rightPlayer.name) drank \(potion) potion."
+        }
+        
         // You forfeit your attack if you use your potion.
         rightPlayer.usePotion()
         audioPotionEffect.play()
@@ -246,14 +325,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         rightPlayerPotion.hidden = true
         updateRightPlayerStats()
         
-        let potion: String
-        switch rightPlayer.potion {
-        case .Health: potion = "a health"
-        case .Attack: potion = "an attack"
-        case .Armor: potion = "an armor"
-        }
-        statusText.text = "\(rightPlayer.name) drank \(potion) potion."
-
         NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "enableLeftPlayerAttack", userInfo: nil, repeats: false)
     }
     
@@ -280,14 +351,27 @@ class ViewController: UIViewController, UITextFieldDelegate {
         leftPlayerIsChoosingOptions = true
         leftPlayerButton.setImage(UIImage(named: "goblin.png"), forState: UIControlState.Normal)
         rightPlayerButton.setImage(UIImage(named: "human.png"), forState: UIControlState.Normal)
+        leftPlayerRoundsWon = 0
+        rightPlayerRoundsWon = 0
+        roundNumber = 1
 
-        whichPlayerIsFirst = Int(arc4random_uniform(2)) + 1
+        whichPlayerHasInitiative = determineInitiative()
         
         setupAudioPlayers()
 
         // Loop the "setup background" music indefinitely until explicitly stopped.
         audioPlayerSetupMusic.numberOfLoops = -1
         audioPlayerSetupMusic.play()
+    }
+    
+    func determineInitiative() -> String {
+        let random = Int(arc4random_uniform(2)) + 1
+        
+        if random == 1 {
+            return "left"
+        } else {
+            return "right"
+        }
     }
     
     func setupAudioPlayers() {
@@ -336,13 +420,19 @@ class ViewController: UIViewController, UITextFieldDelegate {
         leftPlayer = Player(name: leftPlayerName, creatureType: leftPlayerCreatureType, potion: leftPlayerPotionSelection)
         
         switch leftPlayer.potion {
+        case .None: potion = ""
         case .Health: potion = "potion_health.png"
         case .Attack: potion = "potion_attack.png"
         case .Armor: potion = "potion_armor.png"
         }
         
         updateLeftPlayerStats()
-        leftPlayerPotion.setImage(UIImage(named: potion), forState: UIControlState.Normal)
+        
+        if leftPlayerPotion == .None {
+            leftPlayerPotion.hidden = true
+        } else {
+            leftPlayerPotion.setImage(UIImage(named: potion), forState: UIControlState.Normal)
+        }
         
         switch leftPlayerCreatureType! {
         case CreatureType.Human: creatureName = "human.png"
@@ -361,13 +451,19 @@ class ViewController: UIViewController, UITextFieldDelegate {
         rightPlayer = Player(name: rightPlayerName, creatureType: rightPlayerCreatureType, potion: rightPlayerPotionSelection)
         
         switch rightPlayer.potion {
+        case .None: potion = ""
         case .Health: potion = "potion_health.png"
         case .Attack: potion = "potion_attack.png"
         case .Armor: potion = "potion_armor.png"
         }
         
         updateRightPlayerStats()
-        rightPlayerPotion.setImage(UIImage(named: potion), forState: UIControlState.Normal)
+        
+        if rightPlayerPotion == .None {
+            rightPlayerPotion.hidden = true
+        } else {
+            rightPlayerPotion.setImage(UIImage(named: potion), forState: UIControlState.Normal)
+        }
 
         switch rightPlayerCreatureType! {
         case CreatureType.Human: creatureName = "human.png"
@@ -411,7 +507,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         rightPlayerPotion.hidden = false
         rightStackViewStats.hidden = false
 
-        if whichPlayerIsFirst == 1 {
+        if whichPlayerHasInitiative == "left" {
             leftPlayerAttackButton.hidden = false
             leftPlayerPotion.enabled = true
             rightPlayerPotion.enabled = false
@@ -421,7 +517,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             leftPlayerPotion.enabled = false
         }
 
-        statusText.text = "FIGHT!"
+        statusText.text = "Round \(roundNumber): FIGHT!"
         audioFight.play()
     }
     
@@ -455,7 +551,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         if leftPlayerIsChoosingOptions {
             
             leftPlayerPotionSelection = potion
-            leftPlayerIsChoosingOptions = false
+//            leftPlayerIsChoosingOptions = false
             
         } else {
             
@@ -467,9 +563,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
     func proceedToCharacterSelectionPhase() {
         
         if playerSetupComplete {
-            
+
             proceedToAttackPhase()
-            
+
         } else {
             
             gamePhase = .CharacterSelection
@@ -479,6 +575,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             } else {
                 statusText.text = "Right player - Select a creature type:"
             }
+
             potionStackView.hidden = true
             leftPlayerButton.hidden = false
             rightPlayerButton.hidden = false
@@ -497,7 +594,14 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     func proceedToPotionSelectionPhase() {
         gamePhase = .PotionSelection
-        statusText.text = "Select a potion:"
+        
+        if leftPlayerIsChoosingOptions {
+            statusText.text = "Select a potion, \(leftPlayerName):"
+        } else {
+            statusText.text = "Select a potion, \(rightPlayerName):"
+            playerSetupComplete = true
+        }
+        
         playerNameLabel.hidden = true
         acceptNameButton.hidden = true
         potionStackView.hidden = false
@@ -505,14 +609,19 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     func proceedToAttackPhase() {
         gamePhase = .AttackRound
-        audioPlayerSetupMusic.stop()
+        
+        if audioPlayerSetupMusic.playing {
+            audioPlayerSetupMusic.stop()
+        }
+        
         potionStackView.hidden = true
         leftPlayerButton.hidden = false
         rightPlayerButton.hidden = false
 
         initializePlayers()
-        let firstPlayer = whichPlayerIsFirst == 1 ? "\(leftPlayer.name)" : "\(rightPlayer.name)"
-        statusText.text = "\(firstPlayer) gets to attack first."
+        
+        let firstPlayer = whichPlayerHasInitiative == "left" ? "\(leftPlayer.name)" : "\(rightPlayer.name)"
+        statusText.text = "\(firstPlayer) has initiative."
 
         NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "initializeAttackRound", userInfo: nil, repeats: false)
         
@@ -544,12 +653,62 @@ class ViewController: UIViewController, UITextFieldDelegate {
         rightPlayerDEFStat.text = "DEF: \(rightPlayer.armorRating)"
     }
     
-    func playerVictory() {
-        NSTimer.scheduledTimerWithTimeInterval(2.5, target: self, selector: "setupVictory", userInfo: nil, repeats: false)
+    func playerRoundVictory() {
+        
+        if leftPlayer.isPlayerDefeated() {
+            statusText.text = "\(rightPlayer.name) has won round \(roundNumber)."
+            leftPlayerRoundsWon += 1
+        } else {
+            statusText.text = "\(leftPlayer.name) has won round \(roundNumber)."
+            rightPlayerRoundsWon += 1
+        }
+
+        if leftPlayerRoundsWon < 2 && rightPlayerRoundsWon < 2 {
+            NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "setupNextRound", userInfo: nil, repeats: false)
+        } else {
+            NSTimer.scheduledTimerWithTimeInterval(2.5, target: self, selector: "setupGameVictory", userInfo: nil, repeats: false)
+        }
     }
     
-    func setupVictory() {
+    func setupNextRound() {
+        
+        roundNumber += 1
+        
+        if roundNumber == 2 {
+            if whichPlayerHasInitiative == "left" {
+                whichPlayerHasInitiative = "right"
+            } else {
+                whichPlayerHasInitiative = "left"
+            }
+        }
+        
+        // Randomize who is first on the third round if each
+        // player has won one round each so far.
+        if roundNumber == 3 {
+            whichPlayerHasInitiative = determineInitiative()
+        }
+        
+        leftPlayerButton.hidden = true
+        leftStackViewStats.hidden = true
+        leftParchment.hidden = true
+        leftPlayerPotionSelection = PotionType.None
+        
+        rightPlayerButton.hidden = true
+        rightStackViewStats.hidden = true
+        rightParchment.hidden = true
+        rightPlayerPotionSelection = PotionType.None
+        
+        leftPlayerIsChoosingOptions = true
+        proceedToPotionSelectionPhase()
+    }
+    
+    func setupGameVictory() {
         audioVictoryCry.play()
+        
+        leftParchment.hidden = true
+        leftStackViewStats.hidden = true
+        rightParchment.hidden = true
+        rightStackViewStats.hidden = true
 
         if leftPlayer.isPlayerDefeated() {
             statusText.text = "\(rightPlayer.name) is Victorious!"
