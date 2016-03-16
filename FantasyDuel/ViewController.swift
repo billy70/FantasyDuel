@@ -109,77 +109,14 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func healthPotionTapped(sender: AnyObject) {
         gameController.setPlayerPotionSelection(PotionType.Health)
-        
-        gameController.leftPlayerIsChoosingOptions = false
-        
-        // Players get to select a new potion in between rounds,
-        // so, if this is still the first round, the players
-        // are still in the player setup phase at the start
-        // of a 3-round game.
-        if !gameController.playerSetupComplete && gameController.roundNumber == 1 {
-            
-            if gameController.leftPlayerIsChoosingOptions == false {
-                gameController.proceedToCharacterSelectionPhase()
-            }
-            
-        } else {
-            
-            if gameController.rightPlayerPotionSelection == PotionType.None {
-                gameController.proceedToPotionSelectionPhase()
-            } else {
-                gameController.proceedToAttackPhase()
-            }
-        }
     }
     
     @IBAction func armorPotionTapped(sender: AnyObject) {
         gameController.setPlayerPotionSelection(PotionType.Armor)
-
-        gameController.leftPlayerIsChoosingOptions = false
-        
-        // Players get to select a new potion in between rounds,
-        // so, if this is still the first round, the players
-        // are still in the player setup phase at the start
-        // of a 3-round game.
-        if !gameController.playerSetupComplete && gameController.roundNumber == 1 {
-            
-            if gameController.leftPlayerIsChoosingOptions == false {
-                gameController.proceedToCharacterSelectionPhase()
-            }
-            
-        } else {
-            
-            if gameController.rightPlayerPotionSelection == PotionType.None {
-                gameController.proceedToPotionSelectionPhase()
-            } else {
-                gameController.proceedToAttackPhase()
-            }
-        }
     }
     
     @IBAction func attackPotionTapped(sender: AnyObject) {
         gameController.setPlayerPotionSelection(PotionType.Attack)
-
-        gameController.leftPlayerIsChoosingOptions = false
-        
-        // Players get to select a new potion in between rounds,
-        // so, if this is still the first round, the players
-        // are still in the player setup phase at the start
-        // of a 3-round game.
-        if !gameController.playerSetupComplete && gameController.roundNumber == 1 {
-            
-            if gameController.leftPlayerIsChoosingOptions == false {
-                gameController.proceedToCharacterSelectionPhase()
-            }
-            
-        } else {
-            
-            if gameController.rightPlayerPotionSelection == PotionType.None {
-                gameController.proceedToPotionSelectionPhase()
-            } else {
-                gameController.proceedToAttackPhase()
-            }
-        }
     }
     
     @IBAction func leftPlayerAttackButtonTapped(sender: AnyObject) {
