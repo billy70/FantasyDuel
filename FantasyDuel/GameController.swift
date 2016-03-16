@@ -47,7 +47,7 @@ class GameController: NSObject {
     var rightPlayerRoundsWon = 0
     
     var gamePhase: GamePhase = .CharacterSelection
-    var leftPlayerIsChoosingOptions = true
+    var whichPlayerIsUp: PlayerPosition = .Left
     var playerSetupComplete = false
     var whichPlayerHasInitiative: PlayerPosition = .Left
     var roundNumber = 1
@@ -112,7 +112,7 @@ class GameController: NSObject {
         viewController.rightStackViewStats.hidden = true
         
         playerSetupComplete = false
-        leftPlayerIsChoosingOptions = true
+        whichPlayerIsUp = .Left
         leftPlayerRoundsWon = 0
         rightPlayerRoundsWon = 0
         roundNumber = 1
@@ -281,64 +281,77 @@ class GameController: NSObject {
     }
     
     func setPlayerCreatureType(type: CreatureType) {
-        if leftPlayerIsChoosingOptions {
-            
-            leftPlayerCreatureType = type
-            
-        } else {
-            
-            rightPlayerCreatureType = type
+        switch whichPlayerIsUp {
+        case .Left: leftPlayerCreatureType = type
+        case .Right: rightPlayerCreatureType = type
         }
     }
     
     func setPlayerName() {
-        if leftPlayerIsChoosingOptions {
-            
-            leftPlayerName = viewController.playerNameTextField.text ?? "Left"
-            
-        } else {
-            
-            rightPlayerName = viewController.playerNameTextField.text ?? "Right"
+        switch whichPlayerIsUp {
+        case .Left: leftPlayerName = viewController.playerNameTextField.text ?? "Left"
+        case .Right: rightPlayerName = viewController.playerNameTextField.text ?? "Right"
         }
-        
+
         viewController.playerNameTextField.text = ""
     }
     
     func setPlayerPotionSelection(potion: PotionType) {
         audioPotionEffect.play()
         
-        if leftPlayerIsChoosingOptions {
+        switch whichPlayerIsUp {
+        case .Left: leftPlayerPotionSelection = potion
+        case .Right: rightPlayerPotionSelection = potion
+        }
+        
+        if gamePhase == .PotionSelection && whichPlayerIsUp == .Right {
+            playerSetupComplete = true
+        }
+
+    
+    
+        /*
+        gameController.leftPlayerIsChoosingOptions = false
+        
+        // Players get to select a new potion in between rounds,
+        // so, if this is still the first round, the players
+        // are still in the player setup phase at the start
+        // of a 3-round game.
+        if !gameController.playerSetupComplete && gameController.roundNumber == 1 {
             
-            leftPlayerPotionSelection = potion
-            //            leftPlayerIsChoosingOptions = false
+            if gameController.leftPlayerIsChoosingOptions == false {
+                gameController.proceedToCharacterSelectionPhase()
+            }
             
         } else {
             
-            rightPlayerPotionSelection = potion
-            playerSetupComplete = true
+            if gameController.rightPlayerPotionSelection == PotionType.None {
+                gameController.proceedToPotionSelectionPhase()
+            } else {
+                gameController.proceedToAttackPhase()
+            }
         }
+*/
+    
+    
+    
     }
     
     func proceedToCharacterSelectionPhase() {
         
         if playerSetupComplete {
-            
             proceedToAttackPhase()
-            
         } else {
-            
             gamePhase = .CharacterSelection
-            
-            if leftPlayerIsChoosingOptions {
-                viewController.statusText.text = "Left player - Select a creature type:"
-            } else {
-                viewController.statusText.text = "Right player - Select a creature type:"
-            }
             
             viewController.potionStackView.hidden = true
             viewController.leftPlayerButton.hidden = false
             viewController.rightPlayerButton.hidden = false
             
+            switch whichPlayerIsUp {
+            case .Left: viewController.statusText.text = "Left player - Select a creature type:"
+            case .Right: viewController.statusText.text = "Right player - Select a creature type:"
+            }
         }
     }
     
@@ -355,16 +368,18 @@ class GameController: NSObject {
     func proceedToPotionSelectionPhase() {
         gamePhase = .PotionSelection
         
-        if leftPlayerIsChoosingOptions {
-            viewController.statusText.text = "Select a potion, \(leftPlayerName):"
-        } else {
-            viewController.statusText.text = "Select a potion, \(rightPlayerName):"
-            playerSetupComplete = true
-        }
-        
         viewController.playerNameTextField.hidden = true
         viewController.acceptNameButton.hidden = true
         viewController.potionStackView.hidden = false
+        
+        switch whichPlayerIsUp {
+        case .Left: viewController.statusText.text = "Select a potion, \(leftPlayerName):"
+        case .Right: viewController.statusText.text = "Select a potion, \(rightPlayerName):"
+        }
+
+        if whichPlayerIsUp == .Right {
+            playerSetupComplete = true
+        }
     }
     
     func proceedToAttackPhase() {
@@ -471,7 +486,7 @@ class GameController: NSObject {
         viewController.rightParchment.hidden = true
         rightPlayerPotionSelection = PotionType.None
         
-        leftPlayerIsChoosingOptions = true
+        whichPlayerIsUp = .Left
         proceedToPotionSelectionPhase()
     }
     
