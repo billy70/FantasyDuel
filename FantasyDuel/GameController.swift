@@ -20,6 +20,11 @@ enum GamePhase {
     case Victory
 }
 
+enum PlayerPosition {
+    case Left
+    case Right
+}
+
 
 // MARK: - GameController class
 
@@ -44,7 +49,7 @@ class GameController: NSObject {
     var gamePhase: GamePhase = .CharacterSelection
     var leftPlayerIsChoosingOptions = true
     var playerSetupComplete = false
-    var whichPlayerHasInitiative = "left"
+    var whichPlayerHasInitiative: PlayerPosition = .Left
     var roundNumber = 1
     
     var audioBattleMusic: AVAudioPlayer!
@@ -82,22 +87,29 @@ class GameController: NSObject {
     func initializeGame() {
         gamePhase = .CharacterSelection
         
-        viewController.playerNameLabel.delegate = viewController
         viewController.statusText.text = "Left player - Select a creature type:"
-        viewController.playerNameLabel.text = ""
-        viewController.playerNameLabel.hidden = true
-        viewController.potionStackView.hidden = true
-        viewController.leftPlayerButton.hidden = false
-        viewController.rightPlayerButton.hidden = false
+        viewController.playerNameTextField.text = ""
+        viewController.playerNameTextField.hidden = true
         viewController.acceptNameButton.hidden = true
-        viewController.leftPlayerAttackButton.hidden = true
-        viewController.rightPlayerAttackButton.hidden = true
-        viewController.leftStackViewStats.hidden = true
-        viewController.leftParchment.hidden = true
-        viewController.rightStackViewStats.hidden = true
-        viewController.rightParchment.hidden = true
+        viewController.potionStackView.hidden = true
+
+        viewController.leftPlayerButton.hidden = false
         viewController.leftPlayerButton.setImage(UIImage(named: "goblin.png"), forState: UIControlState.Normal)
+        viewController.leftPlayerButton.enabled = true
+        viewController.leftPlayerButton.userInteractionEnabled = true
+        viewController.leftPlayerButton.adjustsImageWhenDisabled = false
+        viewController.leftPlayerAttackButton.hidden = true
+        viewController.leftParchment.hidden = true
+        viewController.leftStackViewStats.hidden = true
+
+        viewController.rightPlayerButton.hidden = false
         viewController.rightPlayerButton.setImage(UIImage(named: "human.png"), forState: UIControlState.Normal)
+        viewController.rightPlayerButton.enabled = true
+        viewController.rightPlayerButton.userInteractionEnabled = true
+        viewController.rightPlayerButton.adjustsImageWhenDisabled = false
+        viewController.rightPlayerAttackButton.hidden = true
+        viewController.rightParchment.hidden = true
+        viewController.rightStackViewStats.hidden = true
         
         playerSetupComplete = false
         leftPlayerIsChoosingOptions = true
@@ -114,13 +126,13 @@ class GameController: NSObject {
         audioPlayerSetupMusic.play()
     }
     
-    func determineInitiative() -> String {
+    func determineInitiative() -> PlayerPosition {
         let random = Int(arc4random_uniform(2)) + 1
         
         if random == 1 {
-            return "left"
+            return .Left
         } else {
-            return "right"
+            return .Right
         }
     }
     
@@ -154,11 +166,6 @@ class GameController: NSObject {
                 print(error.debugDescription)
             }
         }
-    }
-    
-    func textFieldShouldReturn(userText: UITextField) -> Bool {
-        userText.resignFirstResponder()
-        return true;
     }
     
     func initializePlayers() {
@@ -249,18 +256,20 @@ class GameController: NSObject {
     
     func initializeAttackRound() {
         
+        viewController.leftPlayerButton.enabled = false
         viewController.leftParchment.hidden = false
         viewController.leftPlayerPotion.hidden = false
         viewController.leftStackViewStats.hidden = false
         
+        viewController.rightPlayerButton.enabled = false
         viewController.rightParchment.hidden = false
         viewController.rightPlayerPotion.hidden = false
         viewController.rightStackViewStats.hidden = false
         
-        if whichPlayerHasInitiative == "left" {
+        if whichPlayerHasInitiative == .Left {
             viewController.leftPlayerAttackButton.hidden = false
-            viewController.leftPlayerPotion.enabled = true
-            viewController.rightPlayerPotion.enabled = false
+            viewController.leftPlayerPotion.userInteractionEnabled = true
+            viewController.rightPlayerPotion.userInteractionEnabled = false
         } else {
             viewController.rightPlayerAttackButton.hidden = false
             viewController.rightPlayerPotion.enabled = true
@@ -285,14 +294,14 @@ class GameController: NSObject {
     func setPlayerName() {
         if leftPlayerIsChoosingOptions {
             
-            leftPlayerName = viewController.playerNameLabel.text ?? "Left"
+            leftPlayerName = viewController.playerNameTextField.text ?? "Left"
             
         } else {
             
-            rightPlayerName = viewController.playerNameLabel.text ?? "Right"
+            rightPlayerName = viewController.playerNameTextField.text ?? "Right"
         }
         
-        viewController.playerNameLabel.text = ""
+        viewController.playerNameTextField.text = ""
     }
     
     func setPlayerPotionSelection(potion: PotionType) {
@@ -339,7 +348,7 @@ class GameController: NSObject {
         viewController.statusText.text = "Enter your name:"
         viewController.leftPlayerButton.hidden = true
         viewController.rightPlayerButton.hidden = true
-        viewController.playerNameLabel.hidden = false
+        viewController.playerNameTextField.hidden = false
         viewController.acceptNameButton.hidden = false
     }
     
@@ -353,7 +362,7 @@ class GameController: NSObject {
             playerSetupComplete = true
         }
         
-        viewController.playerNameLabel.hidden = true
+        viewController.playerNameTextField.hidden = true
         viewController.acceptNameButton.hidden = true
         viewController.potionStackView.hidden = false
     }
@@ -371,8 +380,11 @@ class GameController: NSObject {
         
         initializePlayers()
         
-        let firstPlayer = whichPlayerHasInitiative == "left" ? "\(leftPlayer.name)" : "\(rightPlayer.name)"
-        viewController.statusText.text = "\(firstPlayer) has initiative."
+        if whichPlayerHasInitiative == .Left {
+            viewController.statusText.text = "\(leftPlayer.name) has initiative."
+        } else {
+            viewController.statusText.text = "\(rightPlayer.name) has initiative."
+        }
         
         NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "initializeAttackRound", userInfo: nil, repeats: false)
         
@@ -433,11 +445,13 @@ class GameController: NSObject {
         
         roundNumber += 1
         
+        // Be fair about the second round: the player that didn't have
+        // initiative on the first round will now have it for the second round.
         if roundNumber == 2 {
-            if whichPlayerHasInitiative == "left" {
-                whichPlayerHasInitiative = "right"
+            if whichPlayerHasInitiative == .Left {
+                whichPlayerHasInitiative = .Right
             } else {
-                whichPlayerHasInitiative = "left"
+                whichPlayerHasInitiative = .Left
             }
         }
         

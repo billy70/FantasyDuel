@@ -18,39 +18,56 @@ class ViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Outlets
     
     @IBOutlet weak var statusText: UILabel!
-    @IBOutlet weak var playerNameLabel: UITextField!
-    @IBOutlet weak var potionStackView: UIStackView!
-    @IBOutlet weak var leftPlayerButton: UIButton!
-    @IBOutlet weak var rightPlayerButton: UIButton!
+    @IBOutlet weak var playerNameTextField: UITextField!
     @IBOutlet weak var acceptNameButton: UIButton!
+    @IBOutlet weak var potionStackView: UIStackView!
+    
+    @IBOutlet weak var leftPlayerButton: UIButton!
     @IBOutlet weak var leftPlayerAttackButton: UIButton!
-    @IBOutlet weak var rightPlayerAttackButton: UIButton!
     @IBOutlet weak var leftParchment: UIImageView!
     @IBOutlet weak var leftStackViewStats: UIStackView!
+    @IBOutlet weak var leftPlayerPotion: UIButton!
     @IBOutlet weak var leftPlayerHPStat: UILabel!
     @IBOutlet weak var leftPlayerATKStat: UILabel!
     @IBOutlet weak var leftPlayerDEFStat: UILabel!
-    @IBOutlet weak var leftPlayerPotion: UIButton!
+    
+    @IBOutlet weak var rightPlayerButton: UIButton!
+    @IBOutlet weak var rightPlayerAttackButton: UIButton!
     @IBOutlet weak var rightParchment: UIImageView!
     @IBOutlet weak var rightStackViewStats: UIStackView!
+    @IBOutlet weak var rightPlayerPotion: UIButton!
     @IBOutlet weak var rightPlayerHPStat: UILabel!
     @IBOutlet weak var rightPlayerATKStat: UILabel!
     @IBOutlet weak var rightPlayerDEFStat: UILabel!
-    @IBOutlet weak var rightPlayerPotion: UIButton!
     
     // MARK: - Properties
 
     var gameController: GameController!
 
+    
+    // MARK: - Delegate methods
+    
+    // Delegate method for the player name text field, which
+    // is used to dismiss the keyboard when 'Return' is tapped.
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true;
+    }
+    
+    
     // MARK: - Overrides
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        
+
         gameController = GameController(viewController: self)
         gameController.initializeGame()
+
+        // The delegate for the player's name label is set to
+        // the view controller so that the keyboard can be
+        // dismissed when the 'Return' button is tapped via
+        // the textFieldShouldReturn() delegate method.
+        playerNameTextField.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -84,7 +101,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
 
     @IBAction func acceptNameButtonTapped(sender: AnyObject) {
-        if playerNameLabel.text != nil {
+        if playerNameTextField.text != nil {
             gameController.setPlayerName()
             gameController.proceedToPotionSelectionPhase()
         }

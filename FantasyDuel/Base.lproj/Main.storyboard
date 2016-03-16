@@ -559,7 +559,7 @@
                         <outlet property="leftPlayerHPStat" destination="Zg1-Bj-aEn" id="pVv-s6-OlO"/>
                         <outlet property="leftPlayerPotion" destination="1X0-gI-zAx" id="FT7-R1-RDM"/>
                         <outlet property="leftStackViewStats" destination="uX9-As-Jzl" id="xXr-z4-MAt"/>
-                        <outlet property="playerNameLabel" destination="PMk-1y-LHt" id="zzC-z5-pBa"/>
+                        <outlet property="playerNameTextField" destination="PMk-1y-LHt" id="fLV-H8-wxa"/>
                         <outlet property="potionStackView" destination="Iuv-wd-Mrd" id="9ee-fW-9ig"/>
                         <outlet property="rightParchment" destination="AVO-sp-J2A" id="1U1-4d-0W9"/>
                         <outlet property="rightPlayerATKStat" destination="jam-5K-ONk" id="D4x-bs-qug"/>
