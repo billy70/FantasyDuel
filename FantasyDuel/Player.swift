@@ -20,12 +20,12 @@ class Player {
 
     // MARK: - Properties - private
     
-    private var _name: String!
-    private var _creatureType: CreatureType!
-    private var _attackPower: Int!
-    private var _armorRating: Int!
+    private var _name = "Player"
+    private var _creatureType: CreatureType = .Human
+    private var _attackPower = 2
+    private var _armorRating = 1
     private var _hitPoints = 50
-    private var _potion: PotionType!
+    private var _potion: PotionType = .None
     
     
     // MARK: Properties - public
@@ -55,7 +55,7 @@ class Player {
         set(newAttackPower) {
             // Attack power can only be mutated externally
             // by using an attack power potion, never directly!
-            if let _ = _potion where _potion == PotionType.Attack {
+            if potion == .Attack {
                _attackPower = newAttackPower
             }
         }
@@ -68,7 +68,7 @@ class Player {
         set (newArmorRating) {
             // Armor rating can only be mutated externally
             // by using an armor rating potion, never directly!
-            if let _ = _potion where _potion == PotionType.Armor {
+            if potion == .Armor {
                 _armorRating = newArmorRating
             }
         }
@@ -81,7 +81,7 @@ class Player {
         set (newHitPoints) {
             // Hit points can only be mutated externally
             // by using a health potion, never directly!
-            if let _ = _potion where _potion == PotionType.Health {
+            if potion == .Health {
                 _hitPoints = newHitPoints
             }
         }
@@ -216,6 +216,8 @@ class Player {
     
     func usePotion() {
         switch potion {
+        case .None:
+            break
         case .Health:
             hitPoints += 15
         case .Armor:
@@ -223,6 +225,9 @@ class Player {
         case .Attack:
             attackPower += 3
         }
+        
+        // The player no longer has a potion to use.
+        _potion = .None
     }
 }
 
