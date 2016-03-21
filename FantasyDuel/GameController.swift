@@ -10,14 +10,14 @@ import Foundation
 import UIKit
 import AVFoundation
 
+
 // MARK: - Game phases enumeration
 
 enum GamePhase {
-    case CharacterSelection
-    case CharacterName
-    case PotionSelection
-    case AttackRound
-    case Victory
+    case NewGame
+    case PlayerSetup
+    case Combat
+    case BetweenRounds
 }
 
 enum PlayerPosition {
@@ -28,42 +28,26 @@ enum PlayerPosition {
 
 // MARK: - GameController class
 
-class GameController: NSObject {
+class GameController {
+
     
-    // MARK: - Properties
+    // MARK: - Properties - private
     
-    var viewController: ViewController!
+    private var leftPlayer: Player!
+    private var rightPlayer: Player!
+
+    private var audioBattleMusic: AVAudioPlayer!
+    private var audioFanfare: AVAudioPlayer!
+    private var audioFight: AVAudioPlayer!
+    private var audioGoblinDeath: AVAudioPlayer!
+    private var audioHumanDeath: AVAudioPlayer!
+    private var audioPlayerSetupMusic: AVAudioPlayer!
+    private var audioPotionEffect: AVAudioPlayer!
+    private var audioSwordAttack: AVAudioPlayer!
+    private var audioAttackMissed: AVAudioPlayer!
+    private var audioVictoryCry: AVAudioPlayer!
     
-    var leftPlayer: Player!
-    var leftPlayerCreatureType: CreatureType!
-    var leftPlayerName = "Left player"
-    var leftPlayerPotionSelection: PotionType!
-    var leftPlayerRoundsWon = 0
-    
-    var rightPlayer: Player!
-    var rightPlayerCreatureType: CreatureType!
-    var rightPlayerName = "Right player"
-    var rightPlayerPotionSelection: PotionType!
-    var rightPlayerRoundsWon = 0
-    
-    var gamePhase: GamePhase = .CharacterSelection
-    var whichPlayerIsUp: PlayerPosition = .Left
-    var playerSetupComplete = false
-    var whichPlayerHasInitiative: PlayerPosition = .Left
-    var roundNumber = 1
-    
-    var audioBattleMusic: AVAudioPlayer!
-    var audioFanfare: AVAudioPlayer!
-    var audioFight: AVAudioPlayer!
-    var audioGoblinDeath: AVAudioPlayer!
-    var audioHumanDeath: AVAudioPlayer!
-    var audioPlayerSetupMusic: AVAudioPlayer!
-    var audioPotionEffect: AVAudioPlayer!
-    var audioSwordAttack: AVAudioPlayer!
-    var audioAttackMissed: AVAudioPlayer!
-    var audioVictoryCry: AVAudioPlayer!
-    
-    var audioDictionary: [String: String] = [
+    private var audioDictionary: [String: String] = [
         "audioBattleMusic": "snd_duels_music",
         "audioFanfare": "snd_fanfare",
         "audioFight": "snd_fight",
@@ -75,68 +59,39 @@ class GameController: NSObject {
         "audioAttackMissed": "snd_missed",
         "audioVictoryCry": "snd_victory_cry"
     ]
-    
-    
-    // MARK: - Methods
-    
-    init(viewController: ViewController) {
-        self.viewController = viewController
-        
-    }
-    
-    func initializeGame() {
-        gamePhase = .CharacterSelection
-        
-        viewController.statusText.text = "Left player - Select a creature type:"
-        viewController.playerNameTextField.text = ""
-        viewController.playerNameTextField.hidden = true
-        viewController.acceptNameButton.hidden = true
-        viewController.potionStackView.hidden = true
 
-        viewController.leftPlayerButton.hidden = false
-        viewController.leftPlayerButton.setImage(UIImage(named: "goblin.png"), forState: UIControlState.Normal)
-        viewController.leftPlayerButton.enabled = true
-        viewController.leftPlayerButton.userInteractionEnabled = true
-        viewController.leftPlayerButton.adjustsImageWhenDisabled = false
-        viewController.leftPlayerAttackButton.hidden = true
-        viewController.leftParchment.hidden = true
-        viewController.leftStackViewStats.hidden = true
-
-        viewController.rightPlayerButton.hidden = false
-        viewController.rightPlayerButton.setImage(UIImage(named: "human.png"), forState: UIControlState.Normal)
-        viewController.rightPlayerButton.enabled = true
-        viewController.rightPlayerButton.userInteractionEnabled = true
-        viewController.rightPlayerButton.adjustsImageWhenDisabled = false
-        viewController.rightPlayerAttackButton.hidden = true
-        viewController.rightParchment.hidden = true
-        viewController.rightStackViewStats.hidden = true
-        
-        playerSetupComplete = false
-        whichPlayerIsUp = .Left
-        leftPlayerRoundsWon = 0
-        rightPlayerRoundsWon = 0
-        roundNumber = 1
-        
-        whichPlayerHasInitiative = determineInitiative()
-        
-        setupAudioPlayers()
-        
-        // Loop the "setup background" music indefinitely until explicitly stopped.
-        audioPlayerSetupMusic.numberOfLoops = -1
-        audioPlayerSetupMusic.play()
-    }
     
-    func determineInitiative() -> PlayerPosition {
-        let random = Int(arc4random_uniform(2)) + 1
-        
-        if random == 1 {
-            return .Left
-        } else {
-            return .Right
-        }
-    }
+    // MARK: Properties - public
     
-    func setupAudioPlayers() {
+    var leftPlayerName = "Left player"
+    var leftPlayerCreatureType: CreatureType = .Goblin
+    var leftPlayerPotion: PotionType = .None
+    var leftPlayerRoundsWon = 0
+    var leftPlayerHitPoints: Int { return leftPlayer.hitPoints }
+    var leftPlayerAttackPower: Int { return leftPlayer.attackPower }
+    var leftPlayerArmorRating: Int { return leftPlayer.armorRating }
+    var leftPlayerSetupComplete = false
+    
+    var rightPlayerName = "Right player"
+    var rightPlayerCreatureType: CreatureType = .Human
+    var rightPlayerPotion: PotionType = .None
+    var rightPlayerRoundsWon = 0
+    var rightPlayerHitPoints: Int { return rightPlayer.hitPoints }
+    var rightPlayerAttackPower: Int { return rightPlayer.attackPower }
+    var rightPlayerArmorRating: Int { return rightPlayer.armorRating }
+    var rightPlayerSetupComplete = false
+    
+    var gamePhase: GamePhase = .NewGame
+    var whichPlayerHasInitiative: PlayerPosition = .Left
+    var whichPlayerIsUp: PlayerPosition = .Left
+    var playerSetupPhaseComplete = false
+    var roundNumber = 0
+    
+    
+    // MARK: - Methods - private
+    
+    private func setupAudioPlayers() {
+        print("gc: setupAudioPlayers()")
         
         for (player, file) in audioDictionary {
             
@@ -167,79 +122,208 @@ class GameController: NSObject {
             }
         }
     }
-    
-    func initializePlayers() {
-        var potion: String
-        var creatureName: String
-        var creatureImage: UIImage
+
+    private func determineInitiative() -> PlayerPosition {
+        print("gc: determineInitiative()")
         
-        // Setup the left player.
-        leftPlayer = Player(name: leftPlayerName, creatureType: leftPlayerCreatureType, potion: leftPlayerPotionSelection)
-        
-        switch leftPlayer.potion {
-        case .None: potion = ""
-        case .Health: potion = "potion_health.png"
-        case .Attack: potion = "potion_attack.png"
-        case .Armor: potion = "potion_armor.png"
-        }
-        
-        updateLeftPlayerStats()
-        
-        if viewController.leftPlayerPotion == .None {
-            viewController.leftPlayerPotion.hidden = true
+        let random = Int(arc4random_uniform(20)) + 1
+
+        if random % 2 == 0 {
+            return .Left
         } else {
-            viewController.leftPlayerPotion.setImage(UIImage(named: potion), forState: UIControlState.Normal)
+            return .Right
         }
-        
-        switch leftPlayerCreatureType! {
-        case CreatureType.Human: creatureName = "human.png"
-        case CreatureType.Goblin: creatureName = "goblin.png"
-        }
-        
-        creatureImage = UIImage(named: creatureName)!
-        if leftPlayerCreatureType! == CreatureType.Human {
-            creatureImage = UIImage(CGImage: creatureImage.CGImage!, scale: creatureImage.scale, orientation: UIImageOrientation.UpMirrored)
-        }
-        
-        viewController.leftPlayerButton.setImage(creatureImage, forState: UIControlState.Normal)
-        
-        
-        // Setup the right player.
-        rightPlayer = Player(name: rightPlayerName, creatureType: rightPlayerCreatureType, potion: rightPlayerPotionSelection)
-        
-        switch rightPlayer.potion {
-        case .None: potion = ""
-        case .Health: potion = "potion_health.png"
-        case .Attack: potion = "potion_attack.png"
-        case .Armor: potion = "potion_armor.png"
-        }
-        
-        updateRightPlayerStats()
-        
-        if viewController.rightPlayerPotion == .None {
-            viewController.rightPlayerPotion.hidden = true
-        } else {
-            viewController.rightPlayerPotion.setImage(UIImage(named: potion), forState: UIControlState.Normal)
-        }
-        
-        switch rightPlayerCreatureType! {
-        case CreatureType.Human: creatureName = "human.png"
-        case CreatureType.Goblin: creatureName = "goblin.png"
-        }
-        
-        creatureImage = UIImage(named: creatureName)!
-        if rightPlayerCreatureType! == CreatureType.Goblin {
-            creatureImage = UIImage(CGImage: creatureImage.CGImage!, scale: creatureImage.scale, orientation: UIImageOrientation.UpMirrored)
-        }
-        
-        viewController.rightPlayerButton.setImage(creatureImage, forState: UIControlState.Normal)
     }
     
-    func playHitOrMissSound(attack: String) {
-        if attack == "hit" {
+    
+    // MARK: Methods - public
+    
+    init() {
+        print("gc: init()")
+        
+        setupAudioPlayers()
+        
+        // Loop the "setup background" music indefinitely until explicitly stopped.
+        audioBattleMusic.numberOfLoops = -1
+        audioBattleMusic.play()
+    }
+
+    func startNewGame() {
+        print("gc: startNewGame()")
+
+        gamePhase = .PlayerSetup
+        leftPlayerSetupComplete = false
+        rightPlayerSetupComplete = false
+        leftPlayerPotion = .None
+        rightPlayerPotion = .None
+        leftPlayerRoundsWon = 0
+        rightPlayerRoundsWon = 0
+        playerSetupPhaseComplete = false
+        roundNumber = 0
+        
+        whichPlayerHasInitiative = determineInitiative()
+        whichPlayerIsUp = whichPlayerHasInitiative
+        
+        if audioVictoryCry.playing {
+            audioVictoryCry.stop()
+            audioVictoryCry.currentTime = NSTimeInterval(0)
+            audioVictoryCry.prepareToPlay()
+        }
+        
+        if audioBattleMusic.playing {
+            audioBattleMusic.stop()
+            audioBattleMusic.currentTime = NSTimeInterval(0)
+            audioBattleMusic.prepareToPlay()
+        }
+
+        // Loop the "player setup" music indefinitely until explicitly stopped.
+        audioPlayerSetupMusic.numberOfLoops = -1
+        audioPlayerSetupMusic.play()
+    }
+    
+    func startNextCombatRound() {
+        print("gc: startNextCombatRound")
+        
+        gamePhase = .Combat
+        roundNumber += 1
+        
+        // To be fair, the player who was not first on
+        // the first combat round gets to go first on
+        // the second combat round.
+        if roundNumber == 2 {
+            switch whichPlayerHasInitiative {
+            case .Left: whichPlayerHasInitiative = .Right
+            case .Right: whichPlayerHasInitiative = .Left
+            }
+        } else if roundNumber == 3 {
+            // Randomly decide who's first on the third combat round.
+            whichPlayerHasInitiative = determineInitiative()
+        }
+
+        whichPlayerIsUp = whichPlayerHasInitiative
+
+        if audioPlayerSetupMusic.playing {
+            audioPlayerSetupMusic.stop()
+            audioPlayerSetupMusic.currentTime = NSTimeInterval(0)
+            audioPlayerSetupMusic.prepareToPlay()
+        }
+        
+        var delay: NSTimeInterval = 1.5
+        var now: NSTimeInterval = audioFight.deviceCurrentTime
+        audioFight.playAtTime(NSTimeInterval(now + delay))
+        
+        delay = 2.75
+        now = audioBattleMusic.deviceCurrentTime
+        audioBattleMusic.playAtTime(NSTimeInterval(now + delay))
+    }
+    
+    func nextPlayerIsUp() {
+        print("gc: nextPlayerIsUp()")
+        
+        if whichPlayerIsUp == .Left {
+            whichPlayerIsUp = .Right
+        } else {
+            whichPlayerIsUp = .Left
+        }
+    }
+    
+    func pickNewPotions() {
+        print("gc: pickNewPotions()")
+        
+        // Let the player who went second on the last combat
+        // round be the first to pick potions this turn.
+        switch whichPlayerHasInitiative {
+        case .Left: whichPlayerIsUp = .Right
+        case .Right: whichPlayerIsUp = .Left
+        }
+    }
+    
+    func setPlayerName(name: String) {
+        print("gc: setPlayerName()")
+        
+        switch whichPlayerIsUp {
+        case .Left: leftPlayerName = name
+        case .Right: rightPlayerName = name
+        }
+    }
+    
+    func setPlayerCreatureType(type: CreatureType) {
+        print("gc: setPlayerCreatureType()")
+        
+        switch whichPlayerIsUp {
+        case .Left: leftPlayerCreatureType = type
+        case .Right: rightPlayerCreatureType = type
+        }
+    }
+    
+    func setPlayerPotionSelection(potion: PotionType) {
+        print("gc: setPlayerPotionSelection()")
+        
+        switch whichPlayerIsUp {
+        case .Left:
+            leftPlayerPotion = potion
+            leftPlayerSetupComplete = true
+        case .Right:
+            rightPlayerPotion = potion
+            rightPlayerSetupComplete = true
+        }
+        
+        audioPotionEffect.play()
+        
+        if leftPlayerSetupComplete && rightPlayerSetupComplete {
+            gamePhase = .Combat
+            playerSetupPhaseComplete = true
             
+            leftPlayer = Player(name: leftPlayerName, creatureType: leftPlayerCreatureType, potion: leftPlayerPotion)
+            rightPlayer = Player(name: rightPlayerName, creatureType: rightPlayerCreatureType, potion: rightPlayerPotion)
+
+            // Since the player setup phase is finished,
+            // the player that has not yet selected their potion
+            // in between combat rounds can now do so.
+            // If both players have selected their potions,
+            // proceed to the combat phase.
+            if (leftPlayerPotion == .None) || (rightPlayerPotion == .None)
+            {
+                gamePhase = .PlayerSetup
+                nextPlayerIsUp()
+            }
+            
+        } else {
+            nextPlayerIsUp()
+        }
+    }
+    
+    func usePotion() {
+        print("gc: usePotion()")
+        
+        switch whichPlayerIsUp {
+        case .Left:
+            leftPlayer.usePotion()
+            leftPlayerPotion = .None
+        case .Right:
+            rightPlayer.usePotion()
+            rightPlayerPotion = .None
+        }
+        
+        audioPotionEffect.play()
+        
+        nextPlayerIsUp()
+    }
+    
+    func isAttackSuccessful() -> Bool {
+        print("gc: isAttackSuccessful()")
+        
+        let attackSuccessful: Bool
+        
+        switch whichPlayerIsUp {
+        case .Left: attackSuccessful = leftPlayer.isAttackSuccessfulAgainst(rightPlayer)
+        case .Right: attackSuccessful = rightPlayer.isAttackSuccessfulAgainst(leftPlayer)
+        }
+        
+        if attackSuccessful {
             if audioSwordAttack.playing {
                 audioSwordAttack.stop()
+                audioSwordAttack.currentTime = NSTimeInterval(0)
                 audioSwordAttack.prepareToPlay()
             }
             audioSwordAttack.play()
@@ -248,263 +332,102 @@ class GameController: NSObject {
             
             if audioAttackMissed.playing {
                 audioAttackMissed.stop()
+                audioAttackMissed.currentTime = NSTimeInterval(0)
                 audioAttackMissed.prepareToPlay()
             }
             audioAttackMissed.play()
         }
+        
+        return attackSuccessful
     }
     
-    func initializeAttackRound() {
+    func calculateDamage() -> Int {
+        print("gc: calculateDamage()")
         
-        viewController.leftPlayerButton.enabled = false
-        viewController.leftParchment.hidden = false
-        viewController.leftPlayerPotion.hidden = false
-        viewController.leftStackViewStats.hidden = false
-        
-        viewController.rightPlayerButton.enabled = false
-        viewController.rightParchment.hidden = false
-        viewController.rightPlayerPotion.hidden = false
-        viewController.rightStackViewStats.hidden = false
-        
-        if whichPlayerHasInitiative == .Left {
-            viewController.leftPlayerAttackButton.hidden = false
-            viewController.leftPlayerPotion.userInteractionEnabled = true
-            viewController.rightPlayerPotion.userInteractionEnabled = false
-        } else {
-            viewController.rightPlayerAttackButton.hidden = false
-            viewController.rightPlayerPotion.enabled = true
-            viewController.leftPlayerPotion.enabled = false
-        }
-        
-        viewController.statusText.text = "Round \(roundNumber): FIGHT!"
-        audioFight.play()
-    }
-    
-    func setPlayerCreatureType(type: CreatureType) {
         switch whichPlayerIsUp {
-        case .Left: leftPlayerCreatureType = type
-        case .Right: rightPlayerCreatureType = type
+        case .Left: return leftPlayer.attackPower - rightPlayer.armorRating
+        case .Right: return rightPlayer.attackPower - leftPlayer.armorRating
         }
     }
-    
-    func setPlayerName() {
-        switch whichPlayerIsUp {
-        case .Left: leftPlayerName = viewController.playerNameTextField.text ?? "Left"
-        case .Right: rightPlayerName = viewController.playerNameTextField.text ?? "Right"
-        }
 
-        viewController.playerNameTextField.text = ""
-    }
-    
-    func setPlayerPotionSelection(potion: PotionType) {
-        audioPotionEffect.play()
+    func playerWonCombatRound() -> Bool {
+        print("gc: playerWonCombatRound()")
+        
+        var wonCombatRound: Bool
         
         switch whichPlayerIsUp {
-        case .Left: leftPlayerPotionSelection = potion
-        case .Right: rightPlayerPotionSelection = potion
-        }
-        
-        if gamePhase == .PotionSelection && whichPlayerIsUp == .Right {
-            playerSetupComplete = true
-        }
+        case .Left:
+            wonCombatRound = rightPlayer.isPlayerDefeated()
+            
+            if wonCombatRound {
+                leftPlayerRoundsWon += 1
 
-    
-    
-        /*
-        gameController.leftPlayerIsChoosingOptions = false
-        
-        // Players get to select a new potion in between rounds,
-        // so, if this is still the first round, the players
-        // are still in the player setup phase at the start
-        // of a 3-round game.
-        if !gameController.playerSetupComplete && gameController.roundNumber == 1 {
-            
-            if gameController.leftPlayerIsChoosingOptions == false {
-                gameController.proceedToCharacterSelectionPhase()
+                switch rightPlayerCreatureType {
+                case .Goblin: audioGoblinDeath.play()
+                case .Human: audioHumanDeath.play()
+                }
             }
-            
-        } else {
-            
-            if gameController.rightPlayerPotionSelection == PotionType.None {
-                gameController.proceedToPotionSelectionPhase()
-            } else {
-                gameController.proceedToAttackPhase()
+        case .Right:
+            wonCombatRound = leftPlayer.isPlayerDefeated()
+
+            if wonCombatRound {
+                rightPlayerRoundsWon += 1
+                
+                switch leftPlayerCreatureType {
+                case .Goblin: audioGoblinDeath.play()
+                case .Human: audioHumanDeath.play()
+                }
             }
         }
-*/
-    
-    
-    
-    }
-    
-    func proceedToCharacterSelectionPhase() {
         
-        if playerSetupComplete {
-            proceedToAttackPhase()
-        } else {
-            gamePhase = .CharacterSelection
+        // Reset the potions for the next combat round.
+        if wonCombatRound {
+            gamePhase = .BetweenRounds
+            leftPlayerPotion = .None
+            leftPlayerSetupComplete = false
+            rightPlayerPotion = .None
+            rightPlayerSetupComplete = false
             
-            viewController.potionStackView.hidden = true
-            viewController.leftPlayerButton.hidden = false
-            viewController.rightPlayerButton.hidden = false
-            
-            switch whichPlayerIsUp {
-            case .Left: viewController.statusText.text = "Left player - Select a creature type:"
-            case .Right: viewController.statusText.text = "Right player - Select a creature type:"
-            }
+            let delay: NSTimeInterval = 2.0
+            let now: NSTimeInterval = audioFanfare.deviceCurrentTime
+            audioFanfare.playAtTime(NSTimeInterval(now + delay))
         }
+        
+        return wonCombatRound
     }
     
-    func proceedToCharacterNamePhase() {
-        gamePhase = .CharacterName
+    func playerWonGame() -> Bool {
+        print("gc: playerWonGame()")
         
-        viewController.statusText.text = "Enter your name:"
-        viewController.leftPlayerButton.hidden = true
-        viewController.rightPlayerButton.hidden = true
-        viewController.playerNameTextField.hidden = false
-        viewController.acceptNameButton.hidden = false
-    }
-    
-    func proceedToPotionSelectionPhase() {
-        gamePhase = .PotionSelection
-        
-        viewController.playerNameTextField.hidden = true
-        viewController.acceptNameButton.hidden = true
-        viewController.potionStackView.hidden = false
+        var wonGame = false
         
         switch whichPlayerIsUp {
-        case .Left: viewController.statusText.text = "Select a potion, \(leftPlayerName):"
-        case .Right: viewController.statusText.text = "Select a potion, \(rightPlayerName):"
-        }
-
-        if whichPlayerIsUp == .Right {
-            playerSetupComplete = true
-        }
-    }
-    
-    func proceedToAttackPhase() {
-        gamePhase = .AttackRound
-        
-        if audioPlayerSetupMusic.playing {
-            audioPlayerSetupMusic.stop()
-        }
-        
-        viewController.potionStackView.hidden = true
-        viewController.leftPlayerButton.hidden = false
-        viewController.rightPlayerButton.hidden = false
-        
-        initializePlayers()
-        
-        if whichPlayerHasInitiative == .Left {
-            viewController.statusText.text = "\(leftPlayer.name) has initiative."
-        } else {
-            viewController.statusText.text = "\(rightPlayer.name) has initiative."
-        }
-        
-        NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "initializeAttackRound", userInfo: nil, repeats: false)
-        
-        let delay: NSTimeInterval = 3.0
-        let now: NSTimeInterval = audioBattleMusic.deviceCurrentTime
-        audioBattleMusic.numberOfLoops = -1
-        audioBattleMusic.playAtTime(NSTimeInterval(now + delay))
-    }
-    
-    func enableLeftPlayerAttack() {
-        NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "enableLeftPlayerAttackDelayed", userInfo: nil, repeats: false)
-    }
-    
-    func enableLeftPlayerAttackDelayed() {
-        viewController.leftPlayerAttackButton.hidden = false
-        viewController.leftPlayerPotion.enabled = true
-    }
-    
-    func enableRightPlayerAttack() {
-        NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "enableRightPlayerAttackDelayed", userInfo: nil, repeats: false)
-    }
-    
-    func enableRightPlayerAttackDelayed() {
-        viewController.rightPlayerAttackButton.hidden = false
-        viewController.rightPlayerPotion.enabled = true
-    }
-    
-    func updateLeftPlayerStats() {
-        viewController.leftPlayerHPStat.text = "HP:  \(leftPlayer.hitPoints)"
-        viewController.leftPlayerATKStat.text = "ATK: \(leftPlayer.attackPower)"
-        viewController.leftPlayerDEFStat.text = "DEF: \(leftPlayer.armorRating)"
-    }
-    
-    func updateRightPlayerStats() {
-        viewController.rightPlayerHPStat.text = "HP:  \(rightPlayer.hitPoints)"
-        viewController.rightPlayerATKStat.text = "ATK: \(rightPlayer.attackPower)"
-        viewController.rightPlayerDEFStat.text = "DEF: \(rightPlayer.armorRating)"
-    }
-    
-    func playerRoundVictory() {
-        
-        if leftPlayer.isPlayerDefeated() {
-            viewController.statusText.text = "\(rightPlayer.name) has won round \(roundNumber)."
-            leftPlayerRoundsWon += 1
-        } else {
-            viewController.statusText.text = "\(leftPlayer.name) has won round \(roundNumber)."
-            rightPlayerRoundsWon += 1
-        }
-        
-        if leftPlayerRoundsWon < 2 && rightPlayerRoundsWon < 2 {
-            NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "setupNextRound", userInfo: nil, repeats: false)
-        } else {
-            NSTimer.scheduledTimerWithTimeInterval(2.5, target: self, selector: "setupGameVictory", userInfo: nil, repeats: false)
-        }
-    }
-    
-    func setupNextRound() {
-        
-        roundNumber += 1
-        
-        // Be fair about the second round: the player that didn't have
-        // initiative on the first round will now have it for the second round.
-        if roundNumber == 2 {
-            if whichPlayerHasInitiative == .Left {
-                whichPlayerHasInitiative = .Right
-            } else {
-                whichPlayerHasInitiative = .Left
+        case .Left:
+            if leftPlayerRoundsWon >= 2 {
+                wonGame = true
+            }
+        case .Right:
+            if rightPlayerRoundsWon >= 2 {
+                wonGame = true
             }
         }
         
-        // Randomize who is first on the third round if each
-        // player has won one round each so far.
-        if roundNumber == 3 {
-            whichPlayerHasInitiative = determineInitiative()
+        if wonGame {
+            gamePhase = .NewGame
+            
+            var delay: NSTimeInterval
+            var now: NSTimeInterval
+
+            delay = 1.5
+            now = audioVictoryCry.deviceCurrentTime
+            audioVictoryCry.playAtTime(NSTimeInterval(now + delay))
+
+            delay = 2.5
+            now = audioFanfare.deviceCurrentTime
+            audioFanfare.playAtTime(NSTimeInterval(now + delay))
         }
         
-        viewController.leftPlayerButton.hidden = true
-        viewController.leftStackViewStats.hidden = true
-        viewController.leftParchment.hidden = true
-        leftPlayerPotionSelection = PotionType.None
-        
-        viewController.rightPlayerButton.hidden = true
-        viewController.rightStackViewStats.hidden = true
-        viewController.rightParchment.hidden = true
-        rightPlayerPotionSelection = PotionType.None
-        
-        whichPlayerIsUp = .Left
-        proceedToPotionSelectionPhase()
-    }
-    
-    func setupGameVictory() {
-        audioVictoryCry.play()
-        
-        viewController.leftParchment.hidden = true
-        viewController.leftStackViewStats.hidden = true
-        viewController.rightParchment.hidden = true
-        viewController.rightStackViewStats.hidden = true
-        
-        if leftPlayer.isPlayerDefeated() {
-            viewController.statusText.text = "\(rightPlayer.name) is Victorious!"
-        } else {
-            viewController.statusText.text = "\(leftPlayer.name) is Victorious!"
-        }
-        
-        NSTimer.scheduledTimerWithTimeInterval(7.0, target: self, selector: "initializeGame", userInfo: nil, repeats: false)
+        return wonGame
     }
 }
 

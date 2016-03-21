@@ -8,10 +8,6 @@
 
 import Foundation
 
-// MARK: - Enumerations
-
-// Humans have a bonus to armor rating,
-// and goblins have a bonus to attack power.
 enum CreatureType {
     case Human
     case Goblin

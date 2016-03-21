@@ -17,14 +17,14 @@
 		D3AB30951C999D3D00E211F6 /* GameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3AB30941C999D3D00E211F6 /* GameController.swift */; };
 		D3D67B231C91FF3D001569D9 /* Potion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D67B221C91FF3D001569D9 /* Potion.swift */; };
 		D3D67B2E1C934B38001569D9 /* snd_duels_music.wav in Resources */ = {isa = PBXBuildFile; fileRef = D3D67B251C934B38001569D9 /* snd_duels_music.wav */; };
-		D3D67B2F1C934B38001569D9 /* snd_fanfare.wav in Resources */ = {isa = PBXBuildFile; fileRef = D3D67B261C934B38001569D9 /* snd_fanfare.wav */; };
+		D3D67B2F1C934B38001569D9 /* snd_victory_cry.wav in Resources */ = {isa = PBXBuildFile; fileRef = D3D67B261C934B38001569D9 /* snd_victory_cry.wav */; };
 		D3D67B301C934B38001569D9 /* snd_fight.wav in Resources */ = {isa = PBXBuildFile; fileRef = D3D67B271C934B38001569D9 /* snd_fight.wav */; };
 		D3D67B311C934B38001569D9 /* snd_goblin_death.wav in Resources */ = {isa = PBXBuildFile; fileRef = D3D67B281C934B38001569D9 /* snd_goblin_death.wav */; };
 		D3D67B321C934B38001569D9 /* snd_human_death.wav in Resources */ = {isa = PBXBuildFile; fileRef = D3D67B291C934B38001569D9 /* snd_human_death.wav */; };
 		D3D67B331C934B38001569D9 /* snd_player_setup.wav in Resources */ = {isa = PBXBuildFile; fileRef = D3D67B2A1C934B38001569D9 /* snd_player_setup.wav */; };
 		D3D67B341C934B38001569D9 /* snd_potion-effect.wav in Resources */ = {isa = PBXBuildFile; fileRef = D3D67B2B1C934B38001569D9 /* snd_potion-effect.wav */; };
 		D3D67B351C934B38001569D9 /* snd_sword_attack.wav in Resources */ = {isa = PBXBuildFile; fileRef = D3D67B2C1C934B38001569D9 /* snd_sword_attack.wav */; };
-		D3D67B361C934B38001569D9 /* snd_victory_cry.wav in Resources */ = {isa = PBXBuildFile; fileRef = D3D67B2D1C934B38001569D9 /* snd_victory_cry.wav */; };
+		D3D67B361C934B38001569D9 /* snd_fanfare.wav in Resources */ = {isa = PBXBuildFile; fileRef = D3D67B2D1C934B38001569D9 /* snd_fanfare.wav */; };
 		D3D67B381C936A64001569D9 /* snd_missed.wav in Resources */ = {isa = PBXBuildFile; fileRef = D3D67B371C936A64001569D9 /* snd_missed.wav */; };
 /* End PBXBuildFile section */
 
@@ -41,14 +41,14 @@
 		D3AB30941C999D3D00E211F6 /* GameController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameController.swift; sourceTree = "<group>"; };
 		D3D67B221C91FF3D001569D9 /* Potion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Potion.swift; sourceTree = "<group>"; };
 		D3D67B251C934B38001569D9 /* snd_duels_music.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = snd_duels_music.wav; sourceTree = "<group>"; };
-		D3D67B261C934B38001569D9 /* snd_fanfare.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = snd_fanfare.wav; sourceTree = "<group>"; };
+		D3D67B261C934B38001569D9 /* snd_victory_cry.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = snd_victory_cry.wav; sourceTree = "<group>"; };
 		D3D67B271C934B38001569D9 /* snd_fight.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = snd_fight.wav; sourceTree = "<group>"; };
 		D3D67B281C934B38001569D9 /* snd_goblin_death.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = snd_goblin_death.wav; sourceTree = "<group>"; };
 		D3D67B291C934B38001569D9 /* snd_human_death.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = snd_human_death.wav; sourceTree = "<group>"; };
 		D3D67B2A1C934B38001569D9 /* snd_player_setup.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = snd_player_setup.wav; sourceTree = "<group>"; };
 		D3D67B2B1C934B38001569D9 /* snd_potion-effect.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "snd_potion-effect.wav"; sourceTree = "<group>"; };
 		D3D67B2C1C934B38001569D9 /* snd_sword_attack.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = snd_sword_attack.wav; sourceTree = "<group>"; };
-		D3D67B2D1C934B38001569D9 /* snd_victory_cry.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = snd_victory_cry.wav; sourceTree = "<group>"; };
+		D3D67B2D1C934B38001569D9 /* snd_fanfare.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = snd_fanfare.wav; sourceTree = "<group>"; };
 		D3D67B371C936A64001569D9 /* snd_missed.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = snd_missed.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -101,7 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				D3D67B251C934B38001569D9 /* snd_duels_music.wav */,
-				D3D67B261C934B38001569D9 /* snd_fanfare.wav */,
+				D3D67B261C934B38001569D9 /* snd_victory_cry.wav */,
 				D3D67B271C934B38001569D9 /* snd_fight.wav */,
 				D3D67B281C934B38001569D9 /* snd_goblin_death.wav */,
 				D3D67B291C934B38001569D9 /* snd_human_death.wav */,
@@ -109,7 +109,7 @@
 				D3D67B2A1C934B38001569D9 /* snd_player_setup.wav */,
 				D3D67B2B1C934B38001569D9 /* snd_potion-effect.wav */,
 				D3D67B2C1C934B38001569D9 /* snd_sword_attack.wav */,
-				D3D67B2D1C934B38001569D9 /* snd_victory_cry.wav */,
+				D3D67B2D1C934B38001569D9 /* snd_fanfare.wav */,
 			);
 			name = Audio;
 			sourceTree = "<group>";
@@ -177,8 +177,8 @@
 				D3D67B2E1C934B38001569D9 /* snd_duels_music.wav in Resources */,
 				D3D67B321C934B38001569D9 /* snd_human_death.wav in Resources */,
 				D3D67B351C934B38001569D9 /* snd_sword_attack.wav in Resources */,
-				D3D67B361C934B38001569D9 /* snd_victory_cry.wav in Resources */,
-				D3D67B2F1C934B38001569D9 /* snd_fanfare.wav in Resources */,
+				D3D67B361C934B38001569D9 /* snd_fanfare.wav in Resources */,
+				D3D67B2F1C934B38001569D9 /* snd_victory_cry.wav in Resources */,
 				D315C1EF1C90C8C200303C95 /* LaunchScreen.storyboard in Resources */,
 				D3D67B381C936A64001569D9 /* snd_missed.wav in Resources */,
 				D3D67B331C934B38001569D9 /* snd_player_setup.wav in Resources */,

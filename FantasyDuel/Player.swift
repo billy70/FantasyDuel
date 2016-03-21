@@ -10,12 +10,7 @@ import Foundation
 
 
 // MARK: - Player class
-//
-// The player's attack power and armor rating are generated randomly
-// at the start of each game, where the attack power will be in the
-// range of 6 through 10, and the armor rating will be 1 through 5.
-// Note that the generator methods are private to this class.
-//
+
 class Player {
 
     // MARK: - Properties - private
@@ -34,8 +29,8 @@ class Player {
         get {
             return _name
         }
-        set {
-            self._name = name
+        set (newName){
+            self._name = newName
         }
     }
     
@@ -43,8 +38,8 @@ class Player {
         get {
             return _creatureType
         }
-        set {
-            self._creatureType = creatureType
+        set (newCreatureType){
+            self._creatureType = newCreatureType
         }
     }
     
@@ -90,6 +85,9 @@ class Player {
     var potion: PotionType {
         get {
             return _potion
+        }
+        set(newPotion) {
+            _potion = newPotion
         }
     }
     
@@ -144,7 +142,7 @@ class Player {
         var armorBonus = 0
         
         // The human's armor rating ranges from 1-6,
-        // with a creature type bonus of 6; therfore,
+        // with a creature type bonus of 6; therefore,
         // humans ultimately have an armor rating of 7-12.
         if self._creatureType == CreatureType.Human {
 
