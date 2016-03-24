@@ -6,6 +6,61 @@
 //  Copyright © 2016 William L. Marr III. All rights reserved.
 //
 
+// **********************************************************
+// Credits & Attributions for audio files used in this app //
+// **********************************************************
+//
+// I downloaded all of the audio files from http://freesound.org
+//
+// I renamed them as appropriate for this iOS app; the first line is the name
+// of the file as used in this app, along with the link to the page for the
+// audio file, and then any credit requirements as specified by the author.
+//
+//
+// snd_duels_music.wav - http://freesound.org/people/dingo1/sounds/243979/
+//      Track Name: "Dragon Warrior (Loopable).wav"
+//      Composed by: Marcus Dellicompagni
+//      Website: www.PoundSound.co.uk
+//
+// snd_fanfare.wav - http://freesound.org/people/chripei/sounds/165492/
+//      Track name: "VICTORY CRY REVERB 1.wav"
+//      Author: chripei
+//
+// snd_fight.wav - http://freesound.org/people/manuts/sounds/320000/
+//      Track name: "FIGHT!.wav"
+//      Author: manuts
+//
+// snd_goblin_death.wav - http://freesound.org/people/spookymodem/sounds/249813/
+//      Track name: "Goblin Death.wav"
+//      Author: spookymodem
+//
+// snd_human_death.wav - http://freesound.org/people/Replix/sounds/173126/
+//      Track name: "Death sound (male)"
+//      Author: Replix
+//
+// snd_player_setup.wav - http://freesound.org/people/zagi2/sounds/204196/
+//      Track name: "military march intro 3.wav"
+//      Author: zagi2
+//
+// snd_potion-effect.wav - http://freesound.org/people/Jamius/sounds/41529/
+//      Track name: "PotionDrinkLONG.wav"
+//      Author: Jamius
+//
+// snd_sword_attack.wav - http://freesound.org/people/audione/sounds/52458/
+//      Track name: "sword-01.wav"
+//      Author: audione
+//
+// snd_missed.wav - http://freesound.org/people/PorkMuncher/sounds/263595/
+//      Track name: "swoosh.wav"
+//      Author: PorkMuncher
+//
+// snd_victory_cry.wav - http://freesound.org/people/zagi2/sounds/193934/
+//      Track name: "fanfare announcement.wav"
+//      Author: zagi2
+//
+// **********************************************************
+
+
 import Foundation
 import UIKit
 import AVFoundation

@@ -6,6 +6,36 @@
 //  Copyright © 2016 William L. Marr III. All rights reserved.
 //
 
+// **********************************************************
+// Credits & Attributions for image files used in this app //
+// **********************************************************
+//
+// All of the following are from the same author, found at: http://opengameart.org/content/handpainted-rpg-icons
+//      Author: LudicArts
+//      Copyright/Attribution Notice:  http://ludicarts.com/free-rpg-icons/ (note that the site seemed to be down,
+//          as I could not connect to it as of March 23, 2016)
+//
+//      AppIcon.png (the orange, "fiery" sword)
+//      potion_armor.png (the green potion)
+//      potion_attack.png (the purple potion)
+//      potion_health.png (the red potion)
+//
+// parchment - http://opengameart.org/content/parchment
+//
+// All of the following were provided by Mark Price (which he acquired from cartoonsmart.com) in the Udemy.com
+// course "iOS9 and Swift 2: From Beginner to Paid Professional", and are allowed to be used for educational
+// purposes (I used these to build this iOS app as I am going through Mark's course learning iOS and Swift programming):
+//
+//      bg.png
+//      goblin.png
+//      ground.png
+//      human.png
+//      player1attackbtn.png
+//      player2attackbtn.png
+//      text-holder.png
+//
+// **********************************************************
+
 import UIKit
 import AVFoundation
 
