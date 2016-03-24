@@ -383,8 +383,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
         setupLeftPlayerCombatViews()
         setupRightPlayerCombatViews()
         
-        NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "setStatusToFight", userInfo:  nil, repeats: false)
-        NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "enablePlayerAttack", userInfo: nil, repeats: false)
+        NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: #selector(ViewController.setStatusToFight), userInfo:  nil, repeats: false)
+        NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: #selector(ViewController.enablePlayerAttack), userInfo: nil, repeats: false)
     }
     
     func setupLeftPlayerCombatViews() {
@@ -616,11 +616,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
 
                 if gameController.playerWonGame() {
                     statusText.text = "\(name) has won the game!"
-                    NSTimer.scheduledTimerWithTimeInterval(10.0, target: self, selector: "pauseForNextGame", userInfo: nil, repeats: false)
+                    NSTimer.scheduledTimerWithTimeInterval(10.0, target: self, selector: #selector(ViewController.pauseForNextGame), userInfo: nil, repeats: false)
                 } else {
                     statusText.text = "\(name) has won round \(gameController.roundNumber)."
                     continueButton.setTitle("Round \(gameController.roundNumber + 1)", forState: .Normal)
-                    NSTimer.scheduledTimerWithTimeInterval(5.0, target: self, selector: "pauseForCombatRound", userInfo: nil, repeats: false)
+                    NSTimer.scheduledTimerWithTimeInterval(5.0, target: self, selector: #selector(ViewController.pauseForCombatRound), userInfo: nil, repeats: false)
                 }
                 
             } else {  // !gameController.playerWonCombatRound()
@@ -634,13 +634,13 @@ class ViewController: UIViewController, UITextFieldDelegate {
                 
                 statusText.text = "\(name) hit for \(damage) \(pointText)!"
                 gameController.nextPlayerIsUp()
-                NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "enablePlayerAttack", userInfo: nil, repeats: false)
+                NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: #selector(ViewController.enablePlayerAttack), userInfo: nil, repeats: false)
             }
             
         } else {  // !gameController.isAttackSuccessful()
             statusText.text = "\(name) missed!"
             gameController.nextPlayerIsUp()
-            NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: "enablePlayerAttack", userInfo: nil, repeats: false)
+            NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: #selector(ViewController.enablePlayerAttack), userInfo: nil, repeats: false)
         }
         
         updatePlayerStats()
